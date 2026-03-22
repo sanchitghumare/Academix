@@ -1,65 +1,133 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
+  const features = [
+    {
+      title: "Attendance Insights",
+      description: "See your subject-wise percentage and prediction instantly so you always know where you stand.",
+      icon: "../calendar.png",
+      tone: "from-cyan-400/30 to-emerald-300/20",
+    },
+    {
+      title: "Smart Planning",
+      description: "Plan when to attend and when it is safe to skip without dropping below your minimum target.",
+      icon: "../book.png",
+      tone: "from-orange-400/30 to-amber-300/20",
+    },
+    {
+      title: "Goal Tracking",
+      description: "Set performance goals and track your momentum with a dashboard designed for daily use.",
+      icon: "../gpa.png",
+      tone: "from-violet-400/30 to-pink-300/20",
+    },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative overflow-hidden px-4 pb-20 pt-10 md:px-8">
+      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 top-24 h-72 w-72 rounded-full bg-orange-400/20 blur-3xl" />
+
+      <section className="mx-auto grid max-w-6xl items-center gap-10 rounded-3xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-lg md:grid-cols-2 md:p-10">
+        <div>
+          <p className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
+            Student Workflow, Simplified
           </p>
+          <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
+            Turn attendance into your competitive edge.
+          </h1>
+          <p className="mt-4 max-w-xl text-sm text-slate-300 md:text-base">
+            Stratos helps you track classes, predict safe skips, and keep your goals on target with clean real-time analytics.
+          </p>
+
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link
+              href="/login"
+              className="rounded-xl bg-cyan-400 px-6 py-3 text-sm font-black text-slate-950 transition hover:brightness-95"
+            >
+              Start Tracking
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+            >
+              Open Dashboard
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="relative mx-auto w-full max-w-sm">
+          <div className="absolute -inset-3 rounded-3xl bg-linear-to-br from-cyan-400/40 to-emerald-300/20 blur-xl" />
+          <div className="relative rounded-3xl border border-white/15 bg-slate-950/90 p-6 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-slate-300">Live Snapshot</p>
+              <span className="rounded-full bg-emerald-400/20 px-2 py-1 text-xs font-bold text-emerald-300">ON TRACK</span>
+            </div>
+            <p className="mt-5 text-5xl font-black text-white">84%</p>
+            <p className="mt-1 text-sm text-slate-400">Overall attendance</p>
+            <div className="mt-5 h-2 w-full rounded-full bg-slate-800">
+              <div className="h-full w-[84%] rounded-full bg-linear-to-r from-cyan-400 to-emerald-400" />
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-slate-400">Safe Subjects</p>
+                <p className="mt-1 text-xl font-black text-emerald-300">5</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <p className="text-slate-400">Need Focus</p>
+                <p className="mt-1 text-xl font-black text-amber-300">2</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <section className="mx-auto mt-14 max-w-6xl">
+        <div className="mb-6 flex items-end justify-between gap-4">
+          <h2 className="text-2xl font-black tracking-tight md:text-4xl">What you get</h2>
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Built for daily consistency</p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-3">
+          {features.map((feature) => (
+            <article
+              key={feature.title}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/40"
+            >
+              <div className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-linear-to-br ${feature.tone} blur-2xl`} />
+              <img
+                src={feature.icon}
+                width={52}
+                height={52}
+                alt={feature.title}
+                className="rounded-xl border border-white/10 bg-slate-800/70 p-2"
+              />
+              <h3 className="mt-4 text-xl font-extrabold">{feature.title}</h3>
+              <p className="mt-2 text-sm text-slate-300">{feature.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto mt-14 max-w-6xl rounded-3xl border border-white/10 bg-linear-to-r from-slate-900 via-slate-900/80 to-slate-950 p-6 md:p-10">
+        <div className="grid items-center gap-6 md:grid-cols-2">
+          <div>
+            <h2 className="text-3xl font-black leading-tight md:text-5xl">Ready to stay ahead every week?</h2>
+            <p className="mt-3 text-sm text-slate-300 md:text-base">
+              Join Stratos and make attendance planning fast, clear, and stress-free.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-start gap-3 md:justify-end">
+            <Link href="/login" className="rounded-xl bg-emerald-400 px-6 py-3 text-sm font-black text-slate-950">
+              Continue with Sign In
+            </Link>
+            <Link href="/dashboard" className="rounded-xl border border-white/20 px-6 py-3 text-sm font-bold text-white hover:bg-white/10">
+              Dashboard Preview
+            </Link>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
+
+
