@@ -7,11 +7,21 @@ import SessionWrapper from "../components/sessionwrapper";
 export const metadata = {
   title: "Stratos",
   description: "Stratos is a platform that helps you track your attendance and progress in your learning journey. We provide you with real-time analytics and insights to help you stay on track and achieve your goals.",
+  manifest: "/manifest.json",
   icons: {
     icon: "/favicon.io.png",
     shortcut: "/favicon.io.png",
     apple: "/favicon.io.png",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Stratos",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  themeColor: "#06b6d4",
 };
 
 export default function RootLayout({ children }) {

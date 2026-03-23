@@ -46,15 +46,19 @@ export default function Dashboard({ params }) {
     const dayKeys = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const today = dayKeys[new Date().getDay()];
     const now = new Date();
-    const currenttime=(now.getHours())+(now.getMinutes()/60); 
+    const isoffset = 5.5 * 60 * 60 * 1000;
+    const istTime = new Date(now.getTime() + isoffset);
+    const currenttime=(istTime.getHours())+(istTime.getMinutes()/60)+(istTime.getSeconds()/3600) ;
     const todayRow = timetable?.schedule?.timetable?.[today];
     if (!todayRow || typeof todayRow !== "object") return null;
     let nextSubject = null;
     let minTimeDiff = Infinity;
     for (const [time, value] of Object.entries(todayRow)) {
       const starttimestr=time.split(" to ")[0];
-      const [hour, minute] = starttimestr.split(".");
-      
+      const [hourstr, minutestr] = starttimestr.split(".");
+      const hour = parseFloat(hourstr);
+       const minute = parseFloat(minutestr) || 0;
+       
       if (isNaN(hour) || isNaN(minute)) continue;
       const lecstart=hour +(minute/60);
       const timeDiff = lecstart - currenttime;
