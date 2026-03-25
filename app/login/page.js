@@ -9,8 +9,9 @@ const Login = () => {
      const router = useRouter();
    useEffect(() => {
     document.title = "Login | Stratos"
+    
     if (session) {
-      router.push('/yourpage');
+      router.push(`/${session.user.name}`);
     }
   }, [session, router]);
 
