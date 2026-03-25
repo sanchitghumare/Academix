@@ -603,10 +603,3 @@ export default function Dashboard({ params }) {
   );
 };
 
-
-
-// const percentage = (attended, total, slots) => {
-//    if(total === 0) return 0;
-//    const skippercentage= (attended / (total + slots)) * 100;
-//    return skippercentage
-// };

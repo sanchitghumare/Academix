@@ -17,6 +17,7 @@ export default function UserSectionLayout({ children }) {
     { label: "Attendance", path: `/${username}` },
     { label: "Timetable", path: `/${username}/timetable` },
     { label: "Grades", path: `/${username}/grades` },
+    { label: "Resources", path: `/${username}/resources` },
   ];
 
   return (
