@@ -1,5 +1,5 @@
 "use client"
-import React, {use, useState, useEffect } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import AttendanceCard from '@/components/Attendancecard';
 import { useRouter } from 'next/navigation';
@@ -20,7 +20,7 @@ export default function Dashboard({ params }) {
   // 1. Fetch subjects from MongoDB on load
   const fetchSubjects = async () => {
     try {
-      if(!session?.user?.email) {
+      if (!session?.user?.email) {
         console.error("User email not found in session");
         return;
       }
@@ -42,32 +42,89 @@ export default function Dashboard({ params }) {
       console.error("Error fetching subjects:", error);
     }
   };
-  const getNextlec=()=>{
+  
+  const getNextlec = () => {
     const dayKeys = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const today = dayKeys[new Date().getDay()];
-    const now = new Date();
-    const isoffset = 5.5 * 60 * 60 * 1000;
-    const istTime = new Date(now.getTime() + isoffset);
-    const currenttime=(istTime.getHours())+(istTime.getMinutes()/60)+(istTime.getSeconds()/3600) ;
-    const todayRow = timetable?.schedule?.timetable?.[today];
-    if (!todayRow || typeof todayRow !== "object") return null;
-    let nextSubject = null;
-    let minTimeDiff = Infinity;
-    for (const [time, value] of Object.entries(todayRow)) {
-      const starttimestr=time.split(" to ")[0];
-      const [hourstr, minutestr] = starttimestr.split(".");
-      const hour = parseFloat(hourstr);
-       const minute = parseFloat(minutestr) || 0;
-       
-      if (isNaN(hour) || isNaN(minute)) continue;
-      const lecstart=hour +(minute/60);
-      const timeDiff = lecstart - currenttime;
-      if (timeDiff > 0 && timeDiff < minTimeDiff) {
-        minTimeDiff = timeDiff;
-        nextSubject = value;
+
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Kolkata",
+      weekday: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).formatToParts(new Date());
+
+    const weekdayMap = {
+      Sun: 0,
+      Mon: 1,
+      Tue: 2,
+      Wed: 3,
+      Thu: 4,
+      Fri: 5,
+      Sat: 6,
+    };
+
+    const weekDayShort = parts.find((p) => p.type === "weekday")?.value || "Sun";
+    const currentDayIdx = weekdayMap[weekDayShort] ?? 0;
+    const currentHour = Number(parts.find((p) => p.type === "hour")?.value || 0);
+    const currentMinute = Number(parts.find((p) => p.type === "minute")?.value || 0);
+    const currentMinutes = currentHour * 60 + currentMinute;
+
+    const parseStartMinutes = (timeRange = "") => {
+      const startRaw = String(timeRange).split("-")[0].split("to")[0].trim();
+      const match = startRaw.match(/(\d{1,2})[:.](\d{2})/);
+      if (!match) return null;
+
+      const hours = Number(match[1]);
+      const minutes = Number(match[2]);
+      if (Number.isNaN(hours) || Number.isNaN(minutes)) return null;
+
+      return hours * 60 + minutes;
+    };
+
+    const findNextInDay = (dayName, isToday) => {
+      const dayRow = timetable?.schedule?.timetable?.[dayName] || timetable?.timetable?.[dayName] || timetable?.[dayName];
+      if (!dayRow || typeof dayRow !== "object") return null;
+
+      let best = null;
+
+      for (const [timeRange, value] of Object.entries(dayRow)) {
+        const startMinutes = parseStartMinutes(timeRange);
+        if (startMinutes === null) continue;
+
+        const subject = typeof value === "object" && value !== null
+          ? String(value.subject || "").trim()
+          : String(value || "").trim();
+
+        if (!subject) continue;
+        if (isToday && startMinutes <= currentMinutes) continue;
+
+        if (!best || startMinutes < best.startMinutes) {
+          best = {
+            subject,
+            time: timeRange,
+            day: dayName,
+            startMinutes,
+          };
+        }
+      }
+
+      return best;
+    };
+
+    const todayName = dayKeys[currentDayIdx];
+    const todayLec = findNextInDay(todayName, true);
+    if (todayLec) return todayLec;
+
+    for (let i = 1; i <= 6; i++) {
+      const nextDayName = dayKeys[(currentDayIdx + i) % 7];
+      const lec = findNextInDay(nextDayName, false);
+      if (lec) {
+        return { ...lec, isTomorrow: i === 1 };
       }
     }
-    return nextSubject;
+
+    return null;
   };
   const getSlotsForSubject = (subjectName) => {
     const dayKeys = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -304,7 +361,7 @@ export default function Dashboard({ params }) {
   const overallPercentage = totalClasses === 0 ? 0 : Math.round((totalAttended / totalClasses) * 100);
   const safeSubjects = subjects.filter((sub) => {
     if (sub.total === 0) return true;
-    return (sub.attended / sub.total) * 100 >= (sub.minRequired+10);
+    return (sub.attended / sub.total) * 100 >= (sub.minRequired + 10);
   }).length;
 
   return (
