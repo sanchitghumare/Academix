@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Stratos is a full-stack academic command center designed to streamline attendance tracking, grade calculations, and course resource management. Built using the MERN stack and Next.js, the application provides students with real-time analytics, predictive scheduling simulations, and cloud-backed asset storage.
 
-## Getting Started
+Live Demo: sanchit05-ecru.vercel.app
 
-First, run the development server:
+🚀 Features
+Secure Authentication: Protected user routing ensuring personalized dashboard data.
 
-```bash
+Live Academic Dashboard: Instantly view your next scheduled lecture based on real-time timetable tracking.
+
+Attendance Analytics with Bunk Simulation: Track overall and subject-wise attendance percentages. Includes an interactive simulator to calculate the mathematical impact of skipping a lecture before making the decision.
+
+Grade & SGPI Tracker: Log and analyze subject-wise grades alongside automated SGPI calculations.
+
+Dynamic Timetable System: Centralized view of daily class line-ups and timing configurations.
+
+Cloud-Backed Resource Repository: Upload, store, and fetch academic documents and question papers seamlessly via Cloudinary integration.
+
+🛠️ Tech Stack
+Frontend: Next.js, React.js, Tailwind CSS
+
+Backend: Node.js, Express.js
+
+Database: MongoDB
+
+Cloud Storage: Cloudinary (Asset Management)
+
+Deployment: Vercel
+
+Installation & Setup
+Follow these steps to run the project locally:
+
+1. Clone the Repository
+Bash
+git clone https://github.com/YOUR_USERNAME/stratos.git
+cd stratos
+2. Install Dependencies
+Install all project dependencies with a single command:
+
+Bash
+npm install
+3. Environment Variables Setup
+Create a .env.local file in the root directory of the project and configure the following keys:
+
+Code snippet
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+4. Run the Application
+Start the unified Next.js local development server:
+
+Bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open http://localhost:3000 in your browser to view the application.
