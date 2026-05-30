@@ -5,16 +5,12 @@ import connectDb from "@/db/connectDb";
 import Resources from "@/models/Resources";
 import { v2 as cloudinary } from "cloudinary";
 import { pipeline, env } from "@xenova/transformers";
-import { PDFParse } from "pdf-parse";
+import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-PDFParse.setWorker(
-    pathToFileURL(resolve(process.cwd(), "node_modules/pdf-parse/dist/pdf-parse/web/pdf.worker.mjs")).href,
-);
 
 env.allowLocalModels = false;
 if (env.backends && env.backends.setPriority) {
@@ -29,12 +25,27 @@ cloudinary.config({
 });
 
 let embedderPromise;
+let pdfParseModulePromise;
+const require = createRequire(import.meta.url);
 
 async function getEmbedder() {
     if (!embedderPromise) {
         embedderPromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
     }
     return embedderPromise;
+}
+
+async function getPdfParseModule() {
+    if (!pdfParseModulePromise) {
+        pdfParseModulePromise = Promise.resolve().then(() => {
+            const { PDFParse } = require("pdf-parse");
+            PDFParse.setWorker(
+                pathToFileURL(resolve(process.cwd(), "node_modules/pdf-parse/dist/pdf-parse/web/pdf.worker.mjs")).href,
+            );
+            return { PDFParse };
+        });
+    }
+    return pdfParseModulePromise;
 }
 
 async function getEmbedding(text) {
@@ -90,6 +101,7 @@ export const POST = async (request) => {
 
         let extractedText = "";
         if (fileName.endsWith(".pdf") || fileType === "application/pdf") {
+            const { PDFParse } = await getPdfParseModule();
             const pdfParser = new PDFParse({ data: buffer });
             try {
                 const parsedPdf = await pdfParser.getText();
