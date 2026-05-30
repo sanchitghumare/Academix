@@ -12,11 +12,6 @@ import { embedText } from "./embedding";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-env.allowLocalModels = false;
-if (env.backends && env.backends.setPriority) {
-    env.backends.setPriority(['wasm', 'cpu']);
-}
-
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
