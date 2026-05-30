@@ -1,32 +1,12 @@
 import { NextResponse } from "next/server";
-import { pipeline, env } from "@xenova/transformers"; 
 import Groq from "groq-sdk";
 import connectDB from "@/db/connectDb";
+import { embedText } from "../embedding";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
-
-env.allowLocalModels = false;
-if (env.backends && env.backends.setPriority) {
-  env.backends.setPriority(['wasm', 'cpu']);
-}
-
-let embedderPromise;
-
-async function getEmbedder() {
-  if (!embedderPromise) {
-    embedderPromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
-  }
-  return embedderPromise;
-}
-
-async function getEmbedding(text) {
-  const embedder = await getEmbedder();
-  const output = await embedder(text, { pooling: "mean", normalize: true });
-  return Array.from(output.data);
-}
 
 export async function POST(request) {
   try {
@@ -36,7 +16,7 @@ export async function POST(request) {
       return NextResponse.json({ error: "Missing filename or question" }, { status: 400 });
     }
 
-    const questionVector = await getEmbedding(question);
+    const questionVector = embedText(question);
 
     const mongooseInstance = await connectDB();
     const db = mongooseInstance.connection 

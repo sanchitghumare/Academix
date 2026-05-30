@@ -4,10 +4,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectDb from "@/db/connectDb";
 import Resources from "@/models/Resources";
 import { v2 as cloudinary } from "cloudinary";
-import { pipeline, env } from "@xenova/transformers";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { embedText } from "./embedding";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -24,16 +24,8 @@ cloudinary.config({
     secure: true,
 });
 
-let embedderPromise;
 let pdfParseModulePromise;
 const require = createRequire(import.meta.url);
-
-async function getEmbedder() {
-    if (!embedderPromise) {
-        embedderPromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
-    }
-    return embedderPromise;
-}
 
 async function getPdfParseModule() {
     if (!pdfParseModulePromise) {
@@ -46,12 +38,6 @@ async function getPdfParseModule() {
         });
     }
     return pdfParseModulePromise;
-}
-
-async function getEmbedding(text) {
-    const embedder = await getEmbedder();
-    const output = await embedder(text, { pooling: "mean", normalize: true });
-    return Array.from(output.data);
 }
 
 function chunkText(text, size = 800, overlap = 150) {
@@ -117,14 +103,9 @@ export const POST = async (request) => {
             return NextResponse.json({ success: false, error: "Document body appears empty or unreadable" }, { status: 400 });
         }
 
-        let docEmbedding = [];
-        try {
-            const textChunks = chunkText(extractedText);
-            const primeTextChunk = textChunks.slice(0, 3).join("\n\n");
-            docEmbedding = await getEmbedding(primeTextChunk);
-        } catch (embeddingErr) {
-            console.warn("[resources.upload] embedding generation failed, saving document without vector data", embeddingErr?.message || embeddingErr);
-        }
+        const textChunks = chunkText(extractedText);
+        const primeTextChunk = textChunks.slice(0, 3).join("\n\n");
+        const docEmbedding = embedText(primeTextChunk);
 
         const originalName = fileName || "resource";
         const originalExt = originalName.includes(".")
