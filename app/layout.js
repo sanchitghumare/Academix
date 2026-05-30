@@ -1,7 +1,6 @@
 
 import "./globals.css";
 import Navbar from "../components/navbar";
-// import Footer from "../components/footer";
 import SessionWrapper from "../components/sessionwrapper"; 
 
 export const metadata = {

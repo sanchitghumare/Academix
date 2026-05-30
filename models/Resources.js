@@ -9,6 +9,8 @@ const ResourceSchema = new mongoose.Schema({
   fileData: { type: String, default: "" },
   fileType: { type: String, default: "" },
   category: { type: String, default: "Notes" }, 
+  textContext: { type: String, default: "" }, 
+  embedding: { type: [Number], default: [] },
   uploadedBy: { type: String },
   createdAt: { type: Date, default: Date.now },
 });

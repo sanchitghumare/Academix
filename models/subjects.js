@@ -15,11 +15,9 @@ const SubjectSchema = new Schema({
     
     done: { type: Boolean, default: false },
 }, { 
-    // This automatically handles createdAt and updatedAt for you!
     timestamps: true 
 });
 
-// Create an index to make searching by userEmail faster
 SubjectSchema.index({ userEmail: 1, subjectname: 1 });
 
 export default mongoose.models.Subject || model("Subject", SubjectSchema);

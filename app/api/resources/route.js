@@ -4,6 +4,22 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectDb from "@/db/connectDb";
 import Resources from "@/models/Resources";
 import { v2 as cloudinary } from "cloudinary";
+import { pipeline, env } from "@xenova/transformers";
+import { PDFParse } from "pdf-parse";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
+PDFParse.setWorker(
+    pathToFileURL(resolve(process.cwd(), "node_modules/pdf-parse/dist/pdf-parse/web/pdf.worker.mjs")).href,
+);
+
+env.allowLocalModels = false;
+if (env.backends && env.backends.setPriority) {
+    env.backends.setPriority(['wasm', 'cpu']);
+}
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,6 +27,33 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true,
 });
+
+let embedderPromise;
+
+async function getEmbedder() {
+    if (!embedderPromise) {
+        embedderPromise = pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+    }
+    return embedderPromise;
+}
+
+async function getEmbedding(text) {
+    const embedder = await getEmbedder();
+    const output = await embedder(text, { pooling: "mean", normalize: true });
+    return Array.from(output.data);
+}
+
+function chunkText(text, size = 800, overlap = 150) {
+    const words = text.split(/\s+/);
+    const chunks = [];
+    for (let i = 0; i < words.length; i += (size - overlap)) {
+        const chunk = words.slice(i, i + size).join(" ");
+        if (chunk.trim()) chunks.push(chunk);
+        if (i + size >= words.length) break;
+    }
+    return chunks;
+}
+
 export const POST = async (request) => {
     try {
         const session = await getServerSession(authOptions);
@@ -41,10 +84,35 @@ export const POST = async (request) => {
 
         console.log("[resources.upload] received file", { fileName, fileType, fileSize });
 
-        // 1. Convert file to Buffer for Cloudinary
         const byteData = await file.arrayBuffer();
         const buffer = Buffer.from(new Uint8Array(byteData));
         const base64Data = buffer.toString("base64");
+
+        let extractedText = "";
+        if (fileName.endsWith(".pdf") || fileType === "application/pdf") {
+            const pdfParser = new PDFParse({ data: buffer });
+            try {
+                const parsedPdf = await pdfParser.getText();
+                extractedText = parsedPdf.text;
+            } finally {
+                await pdfParser.destroy();
+            }
+        } else {
+            extractedText = buffer.toString("utf-8");
+        }
+
+        if (!extractedText.trim()) {
+            return NextResponse.json({ success: false, error: "Document body appears empty or unreadable" }, { status: 400 });
+        }
+
+        let docEmbedding = [];
+        try {
+            const textChunks = chunkText(extractedText);
+            const primeTextChunk = textChunks.slice(0, 3).join("\n\n");
+            docEmbedding = await getEmbedding(primeTextChunk);
+        } catch (embeddingErr) {
+            console.warn("[resources.upload] embedding generation failed, saving document without vector data", embeddingErr?.message || embeddingErr);
+        }
 
         const originalName = fileName || "resource";
         const originalExt = originalName.includes(".")
@@ -55,7 +123,6 @@ export const POST = async (request) => {
             .replace(/[^a-zA-Z0-9_-]/g, "_")
             .slice(0, 80) || "resource";
 
-        // 2. Upload to Cloudinary (best-effort). Opening in app does not depend on this.
         let uploadedUrl = "";
         try {
             const uploadResponse = await new Promise((resolve, reject) => {
@@ -77,7 +144,6 @@ export const POST = async (request) => {
             console.warn("[resources.upload] cloudinary upload failed, using Mongo file storage only", uploadErr?.message || uploadErr);
         }
 
-        // 3. Save the URL to MongoDB
         const newResource = await Resources.create({
             title,
             subject,
@@ -87,6 +153,8 @@ export const POST = async (request) => {
             fileSize,
             fileData: base64Data,
             fileType,
+            textContext: extractedText,
+            embedding: docEmbedding,
             uploadedBy: session.user.email,
         });
 
@@ -105,13 +173,15 @@ export const GET = async (request) => {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
         await connectDb();
-        const resources = await Resources.find({}).sort({ createdAt: -1 });
+        
+        const resources = await Resources.find({}).select("-fileData").sort({ createdAt: -1 });
         return NextResponse.json({ success: true, resources });
     } catch (error) {
         console.error("Error fetching resources:", error);
         return NextResponse.json({ success: false, error: "Failed to fetch resources" }, { status: 500 });
     }   
 };
+
 export const DELETE = async (request) => {
     try {
         const session = await getServerSession(authOptions);    
