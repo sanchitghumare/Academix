@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/28338967/README.md)
 # Stratos — Academic Command Center
 
 [![Vercel Deploy](https://vercelbadge.vercel.app/api/sanchitghumare/sanchit05)](https://sanchit05-ecru.vercel.app/)
@@ -21,6 +20,7 @@ Stratos is a modern, full-stack academic command center designed to help student
 - **Grade & SGPI Tracker**: Analyze subject-wise grades with automated grade and SGPI calculations.
 - **Dynamic Timetable System**: Centralized, customizable timetable for daily class schedules.
 - **Cloud Resource Repository**: Upload, manage, and fetch academic resources and question papers seamlessly with Cloudinary integration.
+- **AI Assist (NEW!)**: Instantly ask questions from your uploaded PDFs in the resource section—get quick answers, summaries, and explanations powered by AI.
 - **Mobile Ready**: Responsive UI designed for desktops, tablets, and smartphones.
 
 ---
@@ -32,7 +32,7 @@ Stratos is a modern, full-stack academic command center designed to help student
 - **Database**: [MongoDB](https://www.mongodb.com/)
 - **Cloud Storage**: [Cloudinary](https://cloudinary.com/)
 - **Deployment**: [Vercel](https://vercel.com/)
-  
+
 ---
 
 ## 🖥️ Screenshots
@@ -83,6 +83,12 @@ Open [http://localhost:3000](http://localhost:3000) to view in your browser.
 
 ---
 
+## 🧠 AI Assist — Ask Anything from Your PDFs
+
+Simply upload any academic PDF in your resources section, and use the new AI Assist tool to ask anything—get explanations, summaries, or find particular content from your PDFs instantly.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request. For major changes, open an issue first to discuss what you would like to change.
@@ -108,3 +114,4 @@ Created by [Sanchit Ghumare](https://github.com/sanchitghumare)
 ---
 
 > Give Stratos a ⭐️ if you found this project helpful!
+
