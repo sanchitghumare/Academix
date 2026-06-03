@@ -29,10 +29,10 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-size-[20px_20px] text-white">
+      <body className="min-h-screen bg-[#0b1120] text-white antialiased">
         <SessionWrapper> 
           <Navbar />
-          <div className="min-h-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-size-[20px_20px] text-white">
+          <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(79,209,255,0.08),transparent_28%),radial-gradient(circle_at_85%_0%,rgba(110,231,183,0.06),transparent_24%),linear-gradient(180deg,#0b1120_0%,#111827_100%)] text-white">
             {children}
           </div>
           {/* <Footer /> */}

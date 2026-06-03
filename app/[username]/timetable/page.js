@@ -204,7 +204,7 @@ export default function TimetablePage({ params }) {
     return (
         <main className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-8">
             <div className="mx-auto max-w-7xl">
-                <section className="mb-8 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">
+                <section className="mb-8 rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
                     <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
                         Weekly Planner
                     </p>
@@ -236,14 +236,14 @@ export default function TimetablePage({ params }) {
 
                         <button
                             onClick={clearTable}
-                            className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
                         >
                             Clear Timetable
                         </button>
                     </div>
                 </section>
 
-                <section className="overflow-hidden rounded-3xl border border-white/10 bg-slate-900/70">
+                <section className="overflow-hidden rounded-3xl border border-white/8 bg-[#121a2b]">
                     <div className="overflow-x-auto">
                         {isLoading ? (
                             <div className="p-10 text-center text-sm text-slate-300">Loading timetable...</div>
@@ -263,7 +263,7 @@ export default function TimetablePage({ params }) {
                                     {slots.map((slot) => (
                                         <tr key={slot} className="border-t border-white/10 align-top">
                                             <td className="p-3">
-                                                <div className="flex flex-col gap-2 rounded-xl border border-white/10 bg-slate-950/60 p-3">
+                                                <div className="flex flex-col gap-2 rounded-xl border border-white/8 bg-[#0f1728] p-3">
                                                     <p className="text-sm font-bold text-cyan-200">{slot}</p>
                                                     <button
                                                         onClick={() => removeSlot(slot)}
@@ -284,7 +284,7 @@ export default function TimetablePage({ params }) {
                                                                 onChange={(e) => updateCell(day, slot, "subject", e.target.value)}
                                                                 placeholder="Subject / Room"
                                                                 rows={2}
-                                                                className="w-full resize-y rounded-lg border border-slate-700 bg-slate-900/70 p-2 text-sm text-white outline-none transition focus:border-cyan-300"
+                                                                className="w-full resize-y rounded-lg border border-white/8 bg-[#182238] p-2 text-sm text-white outline-none transition focus:border-cyan-300"
                                                             />
 
                                                             <div className="flex items-center justify-between gap-2">

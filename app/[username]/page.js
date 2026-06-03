@@ -371,7 +371,7 @@ export default function Dashboard({ params }) {
 
       <div className="relative mx-auto w-full max-w-7xl">
 
-        <section className="mt-8 rounded-3xl border border-white/10 bg-white/3 p-5 backdrop-blur-xl md:p-8">
+        <section className="mt-8 rounded-3xl border border-white/8 bg-[#121a2b] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl">
               <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200">
@@ -386,11 +386,11 @@ export default function Dashboard({ params }) {
             <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto lg:flex-col lg:items-stretch">
               <button
                 onClick={() => router.push(`/${username}/timetable`)}
-                className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 Set Timetable
               </button>
-              <label className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-slate-900/70 px-3 py-2.5 text-sm text-slate-100">
+              <label className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-[#0f1728] px-3 py-2.5 text-sm text-slate-100">
                 <span className="whitespace-nowrap">Simulate Skipping Today</span>
                 <input
                   type="checkbox"
@@ -403,27 +403,27 @@ export default function Dashboard({ params }) {
           </div>
 
           <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Subjects</p>
               <p className="mt-2 text-2xl font-extrabold">{subjects.length}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Overall</p>
               <p className="mt-2 text-2xl font-extrabold">{overallPercentage}%</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Safe</p>
               <p className="mt-2 text-2xl font-extrabold text-emerald-300">{safeSubjects}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">At Risk</p>
               <p className="mt-2 text-2xl font-extrabold text-rose-300">{Math.max(subjects.length - safeSubjects, 0)}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Current SGPI</p>
               <p className="mt-2 text-2xl font-extrabold text-cyan-300">{currentSgpi.toFixed(2)}</p>
             </div>
-            <div className='rounded-2xl border border-white/10 bg-slate-900/70 p-4'>
+            <div className='rounded-2xl border border-white/8 bg-[#0f1728] p-4'>
               <p className="text-xs uppercase tracking-wider text-slate-400">Next Lecture</p>
               <p className="mt-2 text-2xl font-extrabold">{getNextlec()?.subject || "None"}</p>
             </div>
@@ -473,7 +473,7 @@ export default function Dashboard({ params }) {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl md:p-8">
+          <div className="w-full max-w-md rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
             <h2 className="text-2xl font-black">Add New Subject</h2>
             <p className="mt-1 text-sm text-slate-300">Set your current attendance and target percentage.</p>
 
@@ -519,7 +519,7 @@ export default function Dashboard({ params }) {
             <div className="mt-7 flex gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="flex-1 rounded-xl border border-white/20 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
+                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
               >
                 Cancel
               </button>
@@ -536,7 +536,7 @@ export default function Dashboard({ params }) {
 
       {isEditModalOpen && editSubject && (
         <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-slate-900 p-6 shadow-2xl md:p-8">
+          <div className="w-full max-w-md rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
             <h2 className="text-2xl font-black">Edit Subject</h2>
             <p className="mt-1 text-sm text-slate-300">Update attendance values for this card.</p>
 
@@ -585,7 +585,7 @@ export default function Dashboard({ params }) {
                   setIsEditModalOpen(false);
                   setEditSubject(null);
                 }}
-                className="flex-1 rounded-xl border border-white/20 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
+                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
               >
                 Cancel
               </button>

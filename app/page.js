@@ -24,12 +24,12 @@ export default function Home() {
 
   return (
     <main className="relative overflow-hidden px-4 pb-20 pt-10 md:px-8">
-      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-24 h-72 w-72 rounded-full bg-orange-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 top-24 h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
 
-      <section className="mx-auto grid max-w-6xl items-center gap-10 rounded-3xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-lg md:grid-cols-2 md:p-10">
+      <section className="mx-auto grid max-w-6xl items-center gap-10 rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:grid-cols-2 md:p-10">
         <div>
-          <p className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
+          <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-400/8 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
             Student Workflow, Simplified
           </p>
           <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
@@ -42,13 +42,13 @@ export default function Home() {
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
               href="/login"
-              className="rounded-xl bg-cyan-400 px-6 py-3 text-sm font-black text-slate-950 transition hover:brightness-95"
+              className="rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-6 py-3 text-sm font-black text-slate-950 transition hover:brightness-95"
             >
               Start Tracking
             </Link>
             <Link
               href="/dashboard"
-              className="rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
+              className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
             >
               Open Dashboard
             </Link>
@@ -56,8 +56,7 @@ export default function Home() {
         </div>
 
         <div className="relative mx-auto w-full max-w-sm">
-          <div className="absolute -inset-3 rounded-3xl bg-linear-to-br from-cyan-400/40 to-emerald-300/20 blur-xl" />
-          <div className="relative rounded-3xl border border-white/15 bg-slate-950/90 p-6 shadow-2xl">
+          <div className="relative rounded-3xl border border-white/8 bg-[#0f1728] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-slate-300">Live Snapshot</p>
               <span className="rounded-full bg-emerald-400/20 px-2 py-1 text-xs font-bold text-emerald-300">ON TRACK</span>
@@ -68,11 +67,11 @@ export default function Home() {
               <div className="h-full w-[84%] rounded-full bg-linear-to-r from-cyan-400 to-emerald-400" />
             </div>
             <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="rounded-xl border border-white/8 bg-white/4 p-3">
                 <p className="text-slate-400">Safe Subjects</p>
                 <p className="mt-1 text-xl font-black text-emerald-300">5</p>
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+              <div className="rounded-xl border border-white/8 bg-white/4 p-3">
                 <p className="text-slate-400">Need Focus</p>
                 <p className="mt-1 text-xl font-black text-amber-300">2</p>
               </div>
@@ -91,15 +90,15 @@ export default function Home() {
           {features.map((feature) => (
             <article
               key={feature.title}
-              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/70 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/40"
+              className="group relative overflow-hidden rounded-2xl border border-white/8 bg-[#121a2b] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/25"
             >
-              <div className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-linear-to-br ${feature.tone} blur-2xl`} />
+              <div className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-linear-to-br ${feature.tone} opacity-70 blur-2xl`} />
               <img
                 src={feature.icon}
                 width={52}
                 height={52}
                 alt={feature.title}
-                className="rounded-xl border border-white/10 bg-slate-800/70 p-2"
+                className="rounded-xl border border-white/8 bg-slate-800 p-2"
               />
               <h3 className="mt-4 text-xl font-extrabold">{feature.title}</h3>
               <p className="mt-2 text-sm text-slate-300">{feature.description}</p>
@@ -108,7 +107,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-14 max-w-6xl rounded-3xl border border-white/10 bg-linear-to-r from-slate-900 via-slate-900/80 to-slate-950 p-6 md:p-10">
+      <section className="mx-auto mt-14 max-w-6xl rounded-3xl border border-white/8 bg-[#121a2b] p-6 md:p-10">
         <div className="grid items-center gap-6 md:grid-cols-2">
           <div>
             <h2 className="text-3xl font-black leading-tight md:text-5xl">Ready to stay ahead every week?</h2>
@@ -117,10 +116,10 @@ export default function Home() {
             </p>
           </div>
           <div className="flex flex-wrap justify-start gap-3 md:justify-end">
-            <Link href="/login" className="rounded-xl bg-emerald-400 px-6 py-3 text-sm font-black text-slate-950">
+            <Link href="/login" className="rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-6 py-3 text-sm font-black text-slate-950">
               Continue with Sign In
             </Link>
-            <Link href="/dashboard" className="rounded-xl border border-white/20 px-6 py-3 text-sm font-bold text-white hover:bg-white/10">
+            <Link href="/dashboard" className="rounded-xl border border-white/10 px-6 py-3 text-sm font-bold text-white hover:bg-white/10">
               Dashboard Preview
             </Link>
           </div>

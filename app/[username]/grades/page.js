@@ -216,7 +216,7 @@ export default function Page({ params }) {
   return (
     <main className="min-h-screen bg-slate-950 px-4 pb-20 pt-8 text-white md:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
-        <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">
+        <section className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
               <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200">
@@ -230,26 +230,26 @@ export default function Page({ params }) {
 
             <button
               onClick={() => router.push(`/${username}`)}
-              className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
             >
               Back to Dashboard
             </button>
           </div>
 
           <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Subjects</p>
               <p className="mt-2 text-2xl font-extrabold">{stats.totalSubjects}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Credits</p>
               <p className="mt-2 text-2xl font-extrabold">{stats.totalCredits}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">SGPA</p>
               <p className="mt-2 text-2xl font-extrabold text-emerald-300">{stats.sgpa.toFixed(2)}</p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
               <p className="text-xs uppercase tracking-wider text-slate-400">Avg Marks</p>
               <p className="mt-2 text-2xl font-extrabold text-cyan-300">{stats.avgMarks.toFixed(1)}</p>
             </div>
@@ -257,7 +257,7 @@ export default function Page({ params }) {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-5">
-          <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6 lg:col-span-2">
+          <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 lg:col-span-2">
             <h2 className="text-xl font-black">Add / Update Grade</h2>
             <p className="mt-1 text-sm text-slate-300">Saving the same subject updates existing grade entry.</p>
 
@@ -345,7 +345,7 @@ export default function Page({ params }) {
             )}
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6 lg:col-span-3">
+          <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 lg:col-span-3">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
               <h2 className="text-xl font-black">Grade Entries</h2>
               <select

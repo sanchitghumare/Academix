@@ -44,7 +44,8 @@ const Dashboard = () => {
         })
     }
     return (
-        <>
+        <main className="min-h-screen bg-transparent px-4 pb-20 pt-8 text-white md:px-8">
+          <div className="mx-auto max-w-5xl">
             <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -55,33 +56,39 @@ const Dashboard = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-                theme="light"
+                theme="dark"
             />
-            <ToastContainer />
             
-            <div className='container mx-auto py-5 px-6'>
-                <h1 className='text-center my-5 text-3xl font-bold '>Welcome to your Dashboard</h1>
-                <form action={handleSubmit} className="max-w-2xl mx-auto">
-                    <div className="my">
-                        <label htmlFor="name" className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Name</label>
-                        <input className='block mb-2 text-sm font-medium text-gray-900 dark:text-white' value={form.email ? form.email : ""} onChange={handleChange} type='email' name="email" id="email" />
+                        <section className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
+                                <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                                    <div>
+                                        <p className="mb-3 inline-flex rounded-full border border-cyan-300/20 bg-cyan-400/8 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200">Profile</p>
+                                        <h1 className='text-3xl font-black tracking-tight md:text-5xl'>Welcome to your Dashboard</h1>
+                                        <p className="mt-2 max-w-2xl text-sm text-slate-300 md:text-base">Update your account details from a single clean workspace.</p>
+                                    </div>
+                                </div>
+                                <form action={handleSubmit} className="mx-auto mt-8 max-w-2xl space-y-4">
+                                        <div>
+                                                <label htmlFor="name" className='mb-2 block text-sm font-medium text-slate-200'>Email</label>
+                                                <input className='block w-full rounded-xl border border-white/8 bg-[#0f1728] px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300' value={form.email ? form.email : ""} onChange={handleChange} type='email' name="email" id="email" />
 
                     </div>
                     
                     <div className='my-2'>
-                        <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-                        <input value={form.username ? form.username : ""} onChange={handleChange} type="text" name='username' id="username" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <label htmlFor="username" className="mb-2 block text-sm font-medium text-slate-200">Username</label>
+                        <input value={form.username ? form.username : ""} onChange={handleChange} type="text" name='username' id="username" className="block w-full rounded-xl border border-white/8 bg-[#0f1728] px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300" />
                     </div>
                     <div className="my-2">
-                        <label htmlFor="profilepic" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Profile Picture</label>
-                        <input value={form.profilepic ? form.profilepic : ""} onChange={handleChange} type="text" name='profilepic' id="profilepic" className="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        <label htmlFor="profilepic" className="mb-2 block text-sm font-medium text-slate-200">Profile Picture</label>
+                        <input value={form.profilepic ? form.profilepic : ""} onChange={handleChange} type="text" name='profilepic' id="profilepic" className="block w-full rounded-xl border border-white/8 bg-[#0f1728] px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-300" />
                     </div>  
                     <div className="my-6">
-                        <button type="submit" className="block w-full p-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:ring-blue-500 focus:ring-4 focus:outline-none   dark:focus:ring-blue-800 font-medium text-sm">Save</button>
+                        <button type="submit" className="block w-full rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-4 py-3 text-sm font-black text-slate-950 transition hover:brightness-95">Save</button>
                     </div>
                 </form>
-            </div>
-        </>
+            </section>
+          </div>
+        </main>
     )
 }
 

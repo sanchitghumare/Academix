@@ -26,22 +26,22 @@ const Attendancecard = ({ subject, onUpdate, onDelete, onEdit, displayPct, isDro
   const prediction = getPrediction();
   
   return (
-    <article className="group relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-slate-900/95 via-slate-950 to-black p-5 shadow-[0_20px_60px_-35px_rgba(56,189,248,0.65)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/30">
-      <div className="pointer-events-none absolute -top-14 -right-10 h-28 w-28 rounded-full bg-cyan-400/25 blur-3xl" />
+    <article className="group relative overflow-hidden rounded-3xl border border-white/8 bg-[#121a2b] p-5 shadow-[0_18px_50px_rgba(0,0,0,0.24)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/20">
+      <div className="pointer-events-none absolute -top-14 -right-10 h-28 w-28 rounded-full bg-cyan-400/10 blur-3xl" />
 
       <div className="mb-5 flex items-start justify-between gap-3">
         <h3 className="line-clamp-1 text-xl font-extrabold tracking-tight text-white">{name}</h3>
         <div className="flex items-center gap-2">
-          <span className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider ${prediction.isSafe ? 'border-emerald-300/30 bg-emerald-400/10 text-emerald-300' : 'border-rose-300/30 bg-rose-400/10 text-rose-300'}`}>
+          <span className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider ${prediction.isSafe ? 'border-emerald-300/20 bg-emerald-400/10 text-emerald-300' : 'border-rose-300/20 bg-rose-400/10 text-rose-300'}`}>
             Goal {target}%
           </span>
           <button
-            className='rounded-full border border-cyan-300/40 bg-cyan-400/20 px-3 py-1 text-xs font-bold text-cyan-100'
+            className='rounded-full border border-cyan-300/20 bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-100'
             onClick={() => onEdit(subject)}
           >
             Edit
           </button>
-          <button className='rounded-full bg-rose-500 px-3 py-1 text-white' onClick={() => onDelete(subject._id)}>
+          <button className='rounded-full border border-rose-300/20 bg-rose-500/10 px-3 py-1 text-rose-100' onClick={() => onDelete(subject._id)}>
             Delete
           </button>
         </div>
@@ -77,13 +77,13 @@ const Attendancecard = ({ subject, onUpdate, onDelete, onEdit, displayPct, isDro
       <div className="grid grid-cols-2 gap-3">
         <button
           onClick={() => onUpdate(name, 'present')}
-          className="rounded-xl bg-emerald-400 px-4 py-2.5 text-sm font-extrabold text-slate-950 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
+          className="rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-4 py-2.5 text-sm font-extrabold text-slate-950 transition-transform duration-200 hover:scale-[1.02] active:scale-95"
         >
           + Present
         </button>
         <button
           onClick={() => onUpdate(name, 'absent')}
-          className="rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-bold text-white transition-transform duration-200 hover:scale-[1.02] hover:bg-white/10 active:scale-95"
+          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-bold text-white transition-transform duration-200 hover:scale-[1.02] hover:bg-white/10 active:scale-95"
         >
           - Absent
         </button>

@@ -15,15 +15,15 @@ const Login = () => {
     }
   }, [session, router]);
 
-  const providerBtn = "group flex w-full items-center justify-between rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-cyan-300/40 hover:bg-white/10";
+  const providerBtn = "group flex w-full items-center justify-between rounded-xl border border-white/8 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-cyan-300/20 hover:bg-white/10";
 
   return (
     <main className="relative min-h-screen overflow-hidden px-4 py-12 text-white md:px-8">
-      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute right-0 top-1/3 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
+      <div className="pointer-events-none absolute right-0 top-1/3 h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
 
-      <section className="relative mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white/10 bg-slate-900/70 shadow-2xl backdrop-blur-lg md:grid-cols-2">
-        <div className="hidden border-r border-white/10 bg-linear-to-b from-cyan-500/20 to-transparent p-8 md:block">
+      <section className="relative mx-auto grid max-w-5xl overflow-hidden rounded-3xl border border-white/8 bg-[#121a2b] shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:grid-cols-2">
+        <div className="hidden border-r border-white/8 bg-[#0f1728] p-8 md:block">
           <p className="inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
             Welcome Back
           </p>

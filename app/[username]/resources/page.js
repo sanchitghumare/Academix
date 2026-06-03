@@ -44,6 +44,11 @@ const page = ({ params }) => {
     const [loading, setLoading] = useState(false);
     const [inputQuestion, setInputQuestion] = useState("");
     const [selectedResource, setSelectedResource] = useState(null);
+    const [quizData, setQuizData] = useState(null);
+    const [quizAnswers, setQuizAnswers] = useState([]);
+    const [quizScore, setQuizScore] = useState(null);
+    const [quizSubmitting, setQuizSubmitting] = useState(false);
+    const [quizError, setQuizError] = useState("");
 
     const filteredResources = useMemo(() => {
         if (filter === "All") return resources;
@@ -155,12 +160,61 @@ const page = ({ params }) => {
             setLoading(false);
         }
     };
+    const GenerateQuiz = async () => {  
+        if (!selectedResource) return;
 
+        const activeFileName = selectedResource.fileName || selectedResource.title;
+        setQuizError("");
+        setLoading(true);
+
+        try {
+            const res = await fetch("/api/resources/quiz", { 
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filename: activeFileName, resourceTitle: selectedResource.title }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data?.quiz) {
+                throw new Error(data?.error || "No quiz received.");
+            }
+
+            setQuizData(data.quiz);
+            setQuizAnswers(Array(data.quiz.questions?.length || 0).fill(null));
+            setQuizScore(null);
+        } catch (err) {
+            console.error("Error generating quiz:", err);
+            setQuizError(err?.message || "Error connecting to local AI engine.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleQuizAnswer = (questionIndex, optionIndex) => {
+        setQuizAnswers((prev) => {
+            const nextAnswers = [...prev];
+            nextAnswers[questionIndex] = optionIndex;
+            return nextAnswers;
+        });
+    };
+
+    const submitQuiz = () => {
+        if (!quizData?.questions?.length) return;
+
+        setQuizSubmitting(true);
+        const score = quizData.questions.reduce((total, question, index) => {
+            return total + (quizAnswers[index] === question.correctIndex ? 1 : 0);
+        }, 0);
+
+        setQuizScore(score);
+        setQuizSubmitting(false);
+    };
+
+    const currentQuizCount = quizAnswers.filter((answer) => answer !== null && answer !== undefined).length;
     return (
-        <main className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-8">
+        <main className="min-h-screen bg-transparent px-4 py-10 text-white md:px-8">
             <div className="mx-auto max-w-7xl">
                 {/* Header Metrics Section */}
-                <section className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">
+            <section className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
                     <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
                         Shared Study Hub
                     </p>
@@ -170,19 +224,19 @@ const page = ({ params }) => {
                     </p>
 
                     <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                        <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
                             <p className="text-xs uppercase tracking-wider text-slate-400">Total Files</p>
                             <p className="mt-2 text-2xl font-extrabold">{resources.length}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
                             <p className="text-xs uppercase tracking-wider text-slate-400">Filtered</p>
                             <p className="mt-2 text-2xl font-extrabold">{filteredResources.length}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
                             <p className="text-xs uppercase tracking-wider text-slate-400">Category</p>
                             <p className="mt-2 text-2xl font-extrabold text-cyan-300">{filter}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-slate-900/70 p-4">
+                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
                             <p className="text-xs uppercase tracking-wider text-slate-400">User</p>
                             <p className="mt-2 truncate text-2xl font-extrabold text-emerald-300">{username}</p>
                         </div>
@@ -195,7 +249,7 @@ const page = ({ params }) => {
                     {/* Left Column Stack: Upload Input + AI Chat Box */}
                     <div className="space-y-6">
                         {/* 1. Upload Component Form */}
-                        <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-5">
+                        <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5">
                             <h2 className="text-xl font-black">Upload Resource</h2>
                             <p className="mt-1 text-sm text-slate-300">Add title, subject, category and file.</p>
 
@@ -242,63 +296,197 @@ const page = ({ params }) => {
                         </div>
 
                         {/* 2. Interactive AI Chat Assistant Box */}
-                        <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-5 flex flex-col h-105">
-                            <div className="border-b border-white/10 pb-3">
-                                <h2 className="text-xl font-black text-cyan-300">Stratos AI Study Chat</h2>
-                                <p className="text-xs text-slate-400 mt-0.5 truncate">
-                                    {selectedResource ? `Active Context: ${selectedResource.title}` : "Select a document card to talk with AI"}
-                                </p>
+                        <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5 flex flex-col gap-5">
+                            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
+                                <div className="border-b border-white/8 pb-3">
+                                    <h2 className="text-xl font-black text-cyan-300">Stratos AI Study Chat</h2>
+                                    <p className="mt-0.5 truncate text-xs text-slate-400">
+                                        {selectedResource ? `Active Context: ${selectedResource.title}` : "Select a document card to talk with AI"}
+                                    </p>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto space-y-3 py-4 pr-1 text-sm scrollbar-thin">
+                                    {messages.length === 0 ? (
+                                        <div className="flex h-full items-center justify-center px-4 text-center text-xs text-slate-500">
+                                            {selectedResource
+                                                ? "Ask anything!"
+                                                : "Click a resource card's text block on the right to lock it into the AI context window."}
+                                        </div>
+                                    ) : (
+                                        messages.map((msg, idx) => (
+                                            <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                                                <div
+                                                    className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
+                                                        msg.role === "user"
+                                                            ? "bg-cyan-500 font-medium text-slate-950"
+                                                            : "border border-white/5 bg-slate-800 text-slate-100"
+                                                    }`}
+                                                >
+                                                    {msg.text}
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                    {loading && (
+                                        <div className="font-mono text-[10px] tracking-wide text-cyan-400/70 animate-pulse">
+                                            Stratos AI running local inference math loops...
+                                        </div>
+                                    )}
+                                </div>
+
+                                <form onSubmit={askAIAboutResource} className="flex gap-2 border-t border-white/8 pt-2">
+                                    <input
+                                        type="text"
+                                        placeholder={selectedResource ? "Query this document..." : "Lock a file context to begin"}
+                                        disabled={!selectedResource || loading}
+                                        value={inputQuestion}
+                                        onChange={(e) => setInputQuestion(e.target.value)}
+                                        className="flex-1 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs outline-none transition focus:border-cyan-300 disabled:opacity-40"
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={loading || !selectedResource || !inputQuestion.trim()}
+                                        className="rounded-xl bg-cyan-400 px-4 py-2 text-xs font-bold text-slate-950 transition-all hover:brightness-95 disabled:opacity-40"
+                                    >
+                                        Ask
+                                    </button>
+                                </form>
                             </div>
 
-                            {/* Chat Context History Box */}
-                            <div className="flex-1 overflow-y-auto space-y-3 py-4 pr-1 text-sm scrollbar-thin">
-                                {messages.length === 0 ? (
-                                    <div className="h-full flex items-center justify-center text-center text-slate-500 px-4 text-xs">
-                                        {selectedResource 
-                                            ? "Ask anything! The local model has access to this transcript's vector chunks."
-                                            : "Click a resource card's text block on the right to lock it into the AI context window."}
+                            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
+                                <div className="flex flex-col gap-3 border-b border-white/8 pb-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h2 className="text-xl font-black text-emerald-300">Resource Quiz</h2>
+                                        <p className="mt-0.5 text-xs text-slate-400">
+                                            {selectedResource ? `Generate a 5-question quiz from ${selectedResource.title}` : "Select a resource to generate a quiz"}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={GenerateQuiz}
+                                        disabled={loading || !selectedResource}
+                                        className="rounded-xl bg-emerald-400 px-4 py-2 text-xs font-black text-slate-950 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        {loading ? "Generating..." : "Generate Quiz"}
+                                    </button>
+                                </div>
+
+                                {quizError && (
+                                    <p className="mt-3 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-xs text-rose-200">
+                                        {quizError}
+                                    </p>
+                                )}
+
+                                {quizData?.questions?.length ? (
+                                    <div className="mt-4 space-y-4">
+                                        <div className="rounded-xl border border-white/8 bg-white/5 p-3 text-xs text-slate-300">
+                                            <p className="font-semibold text-white">{quizData.title}</p>
+                                            <p className="mt-1">{quizData.instructions}</p>
+                                            <p className="mt-2 text-cyan-300">
+                                                Current answers: {currentQuizCount}/{quizData.questions.length}
+                                            </p>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            {quizData.questions.map((question, questionIndex) => {
+                                                const selectedAnswer = quizAnswers[questionIndex];
+                                                const isSubmitted = quizScore !== null;
+                                                const selectedLabel = selectedAnswer === null || selectedAnswer === undefined
+                                                    ? "Not answered"
+                                                    : String.fromCharCode(65 + selectedAnswer);
+                                                const correctLabel = String.fromCharCode(65 + question.correctIndex);
+
+                                                return (
+                                                    <div key={question.id || questionIndex} className="rounded-2xl border border-white/8 bg-[#121a2b] p-4">
+                                                        <div className="flex items-start justify-between gap-3">
+                                                            <div>
+                                                                <p className="text-sm font-semibold text-white">
+                                                                    {questionIndex + 1}. {question.question}
+                                                                </p>
+                                                                <p className="mt-1 text-[11px] text-slate-400">
+                                                                    Your answer: {selectedLabel}
+                                                                    {isSubmitted ? ` | Correct: ${correctLabel}` : ""}
+                                                                </p>
+                                                            </div>
+                                                            {isSubmitted && (
+                                                                <span
+                                                                    className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${
+                                                                        selectedAnswer === question.correctIndex
+                                                                            ? "bg-emerald-400/15 text-emerald-300"
+                                                                            : "bg-rose-400/15 text-rose-300"
+                                                                    }`}
+                                                                >
+                                                                    {selectedAnswer === question.correctIndex ? "Correct" : "Wrong"}
+                                                                </span>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                                                            {question.options.map((option, optionIndex) => {
+                                                                const isSelected = selectedAnswer === optionIndex;
+                                                                const isCorrect = question.correctIndex === optionIndex;
+                                                                const showCorrectState = isSubmitted && isCorrect;
+                                                                const showWrongState = isSubmitted && isSelected && !isCorrect;
+
+                                                                return (
+                                                                    <button
+                                                                        key={`${question.id || questionIndex}-${optionIndex}`}
+                                                                        type="button"
+                                                                        onClick={() => handleQuizAnswer(questionIndex, optionIndex)}
+                                                                        className={`rounded-xl border px-3 py-2 text-left text-xs transition ${
+                                                                            showCorrectState
+                                                                                ? "border-emerald-400/40 bg-emerald-400/15 text-emerald-100"
+                                                                                : showWrongState
+                                                                                    ? "border-rose-400/40 bg-rose-400/15 text-rose-100"
+                                                                                    : isSelected
+                                                                                        ? "border-cyan-400/40 bg-cyan-400/15 text-cyan-100"
+                                                                                        : "border-white/8 bg-[#182238] text-slate-200 hover:border-white/15"
+                                                                        }`}
+                                                                    >
+                                                                        <span className="mr-2 font-bold">{String.fromCharCode(65 + optionIndex)}.</span>
+                                                                        {option}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+
+                                                        {isSubmitted && question.explanation && (
+                                                            <p className="mt-3 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[11px] text-slate-300">
+                                                                {question.explanation}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        <div className="flex flex-col gap-3 rounded-2xl border border-white/8 bg-[#0f1728] p-4 sm:flex-row sm:items-center sm:justify-between">
+                                            <p className="text-sm text-slate-300">
+                                                {quizScore === null
+                                                    ? "Answer all or some questions, then submit to see your score."
+                                                    : `Final score: ${quizScore}/${quizData.questions.length}`}
+                                            </p>
+                                            <button
+                                                type="button"
+                                                onClick={submitQuiz}
+                                                disabled={quizSubmitting || !quizData.questions.length}
+                                                className="rounded-xl bg-white px-4 py-2 text-xs font-black text-slate-950 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                                            >
+                                                {quizSubmitting ? "Scoring..." : quizScore === null ? "Submit Quiz" : "Rescore"}
+                                            </button>
+                                        </div>
                                     </div>
                                 ) : (
-                                    messages.map((msg, idx) => (
-                                        <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                            <div className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
-                                                msg.role === 'user' ? 'bg-cyan-500 text-slate-950 font-medium' : 'bg-slate-800 text-slate-100 border border-white/5'
-                                            }`}>
-                                                {msg.text}
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                                {loading && (
-                                    <div className="text-[10px] text-cyan-400/70 animate-pulse tracking-wide font-mono">
-                                        Stratos AI running local inference math loops...
+                                    <div className="mt-4 rounded-2xl border border-dashed border-white/15 bg-white/5 p-6 text-center text-sm text-slate-400">
+                                        No quiz generated yet.
                                     </div>
                                 )}
                             </div>
-
-                            {/* Input submission box */}
-                            <form onSubmit={askAIAboutResource} className="flex gap-2 pt-2 border-t border-white/10">
-                                <input
-                                    type="text"
-                                    placeholder={selectedResource ? "Query this document..." : "Lock a file context to begin"}
-                                    disabled={!selectedResource || loading}
-                                    value={inputQuestion}
-                                    onChange={(e) => setInputQuestion(e.target.value)}
-                                    className="flex-1 bg-slate-800 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs outline-none focus:border-cyan-300 disabled:opacity-40 transition"
-                                />
-                                <button 
-                                    type="submit" 
-                                    disabled={loading || !selectedResource || !inputQuestion.trim()}
-                                    className="bg-cyan-400 hover:brightness-95 text-slate-950 font-bold rounded-xl px-4 py-2 text-xs disabled:opacity-40 transition-all"
-                                >
-                                    Ask
-                                </button>
-                            </form>
                         </div>
                     </div>
 
                     {/* Right Column Layout: Display Resources Grid List */}
-                    <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-5">
+                    <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5">
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <h2 className="text-xl font-black">All Resources</h2>
                             <select
@@ -314,7 +502,7 @@ const page = ({ params }) => {
                         </div>
 
                         {isLoading ? (
-                            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6 text-center text-sm text-slate-300">
+                            <div className="mt-6 rounded-2xl border border-white/8 bg-[#0f1728] p-6 text-center text-sm text-slate-300">
                                 Loading resources...
                             </div>
                         ) : filteredResources.length === 0 ? (
@@ -342,6 +530,10 @@ const page = ({ params }) => {
                                                     onClick={() => {
                                                         setSelectedResource(item);
                                                         setMessages([]); // Flush old message arrays on target toggle
+                                                        setQuizData(null);
+                                                        setQuizAnswers([]);
+                                                        setQuizScore(null);
+                                                        setQuizError("");
                                                     }}
                                                 >
                                                     <p className={`text-base font-bold transition-colors ${isSelected ? 'text-cyan-300' : 'text-white group-hover:text-cyan-400'}`}>
