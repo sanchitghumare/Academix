@@ -57,14 +57,14 @@ export async function POST(request) {
         },
         { role: "user", content: question }
       ],
-      model: "llama-3.1-8b-instant", 
-      temperature: 0.2,
+      model: "llama-3.3-70b-versatile", 
+      temperature: 0.3,
     });
 
     return NextResponse.json({ answer: chatCompletion.choices[0].message.content });
 
   } catch (error) {
     console.error("Cloud AI Workflow Failure:", error);
-    return NextResponse.json({ error: "Cloud engine failed to resolve vector coordinates" }, { status: 500 });
+    return NextResponse.json({ error: "Cloud engine failure" }, { status: 500 });
   }
 }

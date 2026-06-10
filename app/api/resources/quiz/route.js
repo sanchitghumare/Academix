@@ -116,8 +116,8 @@ export async function POST(request) {
           content: "Create a quiz now.",
         },
       ],
-      model: "llama-3.1-8b-instant",
-      temperature: 0.2,
+      model: "llama-3.3-70b-versatile",
+      temperature: 0.3,
       response_format: { type: "json_object" },
     });
 

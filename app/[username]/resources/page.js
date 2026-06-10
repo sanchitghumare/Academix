@@ -329,7 +329,7 @@ const page = ({ params }) => {
                                     )}
                                     {loading && (
                                         <div className="font-mono text-[10px] tracking-wide text-cyan-400/70 animate-pulse">
-                                            Stratos AI running local inference math loops...
+                                            Stratos AI running ...
                                         </div>
                                     )}
                                 </div>
