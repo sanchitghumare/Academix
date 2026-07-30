@@ -1,6 +1,6 @@
 "use client";
 
-import React, {use, useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -202,33 +202,43 @@ export default function TimetablePage({ params }) {
     };
 
     return (
-        <main className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-8">
-            <div className="mx-auto max-w-7xl">
-                <section className="mb-8 rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-                    <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-                        Weekly Planner
-                    </p>
-                    <h1 className="text-3xl font-black tracking-tight md:text-5xl">Timetable Grid</h1>
-                    <p className="mt-3 max-w-2xl text-sm text-slate-300 md:text-base">
-                        Set subject and hours for each day-slot (1-hour lecture, 2-hour lab, and so on).
-                    </p>
+        <main className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
+            <div className="mx-auto max-w-5xl px-6 py-12">
+                {/* Header Section */}
+                <section className="mb-8">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Weekly Planner</h1>
+                            <p className="mt-2 text-sm text-[#A1A1AA]">
+                                Set subjects and hours for each day-slot (1-hour lecture, 2-hour lab, etc.).
+                            </p>
+                        </div>
 
-                    <div className="mt-2 text-xs font-semibold uppercase tracking-wide text-cyan-200">
-                        {status === "authenticated" ? saveLabel[saveState] : "Sign in to sync timetable to cloud"}
+                        {status === "authenticated" && saveState && (
+                            <div className="text-xs font-medium text-[#A1A1AA]">
+                                {saveLabel[saveState]}
+                            </div>
+                        )}
+                        {status !== "authenticated" && (
+                            <div className="text-xs font-medium text-[#A1A1AA]/70">
+                                Sign in to sync timetable to cloud
+                            </div>
+                        )}
                     </div>
 
-                    <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center">
-                        <div className="flex w-full gap-2 md:max-w-md">
+                    {/* Controls Bar */}
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+                        <div className="flex w-full gap-2 sm:max-w-md">
                             <input
                                 type="text"
                                 value={newSlot}
                                 onChange={(e) => setNewSlot(e.target.value)}
                                 placeholder="Add slot (e.g. 04:00 - 05:00)"
-                                className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm outline-none transition focus:border-cyan-300"
+                                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                             />
                             <button
                                 onClick={addSlot}
-                                className="rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-black text-slate-950 transition hover:brightness-95"
+                                className="rounded-lg bg-[#FAFAFA] px-4 py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200"
                             >
                                 Add
                             </button>
@@ -236,24 +246,29 @@ export default function TimetablePage({ params }) {
 
                         <button
                             onClick={clearTable}
-                            className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                            className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
                         >
                             Clear Timetable
                         </button>
                     </div>
                 </section>
 
-                <section className="overflow-hidden rounded-3xl border border-white/8 bg-[#121a2b]">
+                <div className="mb-8">
+                    <hr className="border-[#27272A]" />
+                </div>
+
+                {/* Timetable Grid Table */}
+                <section className="overflow-hidden rounded-xl border border-[#27272A] bg-[#111113]">
                     <div className="overflow-x-auto">
                         {isLoading ? (
-                            <div className="p-10 text-center text-sm text-slate-300">Loading timetable...</div>
+                            <div className="p-12 text-center text-xs text-[#A1A1AA]">Loading timetable...</div>
                         ) : (
                             <table className="min-w-225 w-full border-collapse">
                                 <thead>
-                                    <tr className="bg-slate-800/70 text-left">
-                                        <th className="w-44 px-4 py-3 text-sm font-extrabold uppercase tracking-wide text-slate-200">Time Slot</th>
+                                    <tr className="border-b border-[#27272A] bg-[#09090B]/50 text-left">
+                                        <th className="w-44 px-4 py-3 text-xs font-semibold text-[#A1A1AA]">Time Slot</th>
                                         {DAYS.map((day) => (
-                                            <th key={day} className="px-4 py-3 text-sm font-extrabold uppercase tracking-wide text-slate-200">
+                                            <th key={day} className="px-4 py-3 text-xs font-semibold text-[#A1A1AA]">
                                                 {day}
                                             </th>
                                         ))}
@@ -261,41 +276,43 @@ export default function TimetablePage({ params }) {
                                 </thead>
                                 <tbody>
                                     {slots.map((slot) => (
-                                        <tr key={slot} className="border-t border-white/10 align-top">
+                                        <tr key={slot} className="border-b border-[#27272A]/50 align-top last:border-b-0">
+                                            {/* Slot Column */}
                                             <td className="p-3">
-                                                <div className="flex flex-col gap-2 rounded-xl border border-white/8 bg-[#0f1728] p-3">
-                                                    <p className="text-sm font-bold text-cyan-200">{slot}</p>
+                                                <div className="flex flex-col gap-2 rounded-lg border border-[#27272A] bg-[#09090B] p-3">
+                                                    <p className="text-xs font-bold text-[#FAFAFA]">{slot}</p>
                                                     <button
                                                         onClick={() => removeSlot(slot)}
-                                                        className="rounded-lg border border-rose-400/30 bg-rose-400/10 px-2 py-1 text-xs font-semibold text-rose-200 transition hover:bg-rose-400/20"
+                                                        className="w-fit text-[11px] font-medium text-rose-400/80 transition-colors hover:text-rose-400"
                                                     >
                                                         Remove Slot
                                                     </button>
                                                 </div>
                                             </td>
 
+                                            {/* Days Cells */}
                                             {DAYS.map((day) => {
                                                 const cell = normalizeCell(timetable?.[day]?.[slot]);
                                                 return (
                                                     <td key={`${day}-${slot}`} className="p-3">
-                                                        <div className="space-y-2 rounded-xl border border-slate-700 bg-slate-950/70 p-3">
+                                                        <div className="space-y-2 rounded-lg border border-[#27272A] bg-[#09090B] p-3">
                                                             <textarea
                                                                 value={cell.subject}
                                                                 onChange={(e) => updateCell(day, slot, "subject", e.target.value)}
                                                                 placeholder="Subject / Room"
                                                                 rows={2}
-                                                                className="w-full resize-y rounded-lg border border-white/8 bg-[#182238] p-2 text-sm text-white outline-none transition focus:border-cyan-300"
+                                                                className="w-full resize-y rounded-md border border-[#27272A] bg-[#111113] p-2 text-xs text-[#FAFAFA] placeholder-[#A1A1AA]/40 outline-none transition-colors focus:border-zinc-500"
                                                             />
 
                                                             <div className="flex items-center justify-between gap-2">
-                                                                <label className="text-xs font-semibold uppercase tracking-wide text-slate-300">Hours</label>
+                                                                <label className="text-[11px] font-medium text-[#A1A1AA]">Hours</label>
                                                                 <input
                                                                     type="number"
                                                                     min="1"
                                                                     max="4"
                                                                     value={cell.hours}
                                                                     onChange={(e) => updateCell(day, slot, "hours", e.target.value)}
-                                                                    className="w-20 rounded-lg border border-slate-700 bg-slate-900 px-2 py-1 text-sm text-white outline-none transition focus:border-cyan-300"
+                                                                    className="w-16 rounded-md border border-[#27272A] bg-[#111113] px-2 py-1 text-xs text-[#FAFAFA] outline-none transition-colors focus:border-zinc-500"
                                                                 />
                                                             </div>
                                                         </div>
@@ -313,4 +330,3 @@ export default function TimetablePage({ params }) {
         </main>
     );
 }
-

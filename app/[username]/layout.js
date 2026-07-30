@@ -24,53 +24,61 @@ export default function UserSectionLayout({ children }) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed left-4 top-20 z-70 rounded-xl border border-white/10 bg-[#121a2b] px-4 py-2 text-sm font-bold text-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition hover:bg-[#182238]"
+        className="fixed left-4 top-20 z-50 flex items-center gap-2 rounded-lg border border-[#27272A] bg-[#111113] px-3 py-1.5 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
         aria-label="Open sidebar"
       >
-        <img className="invert" width={20} height={20} src="../menu.png" alt="Menu" />
+        <img className="invert opacity-80" width={16} height={16} src="../menu.png" alt="Menu" />
+        <span>Menu</span>
       </button>
 
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-80 bg-black/60 backdrop-blur-sm"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
-      <aside
-        className={`fixed left-0 top-0 z-90 h-full w-72 border-r border-white/8 bg-[#0f1728]/98 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.35)] transition-transform duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
-      >
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-lg font-black tracking-wide text-cyan-200">Dashboard Menu</h2>
-          <button
+      <>
+        {isOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-xs transition-opacity"
             onClick={() => setIsOpen(false)}
-            className="rounded-lg border border-white/10 bg-white/5 px-2 py-1 text-xs font-bold text-white"
-            aria-label="Close sidebar"
-          >
-            X
-          </button>
-        </div>
+          />
+        )}
 
-        <div className="space-y-2">
-          {navItems.map((item) => {
-            const isActive = pathname === item.path;
-            return (
-              <button
-                key={item.path}
-                onClick={() => {
-                  router.push(item.path);
-                  setIsOpen(false);
-                }}
-                className={`w-full rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${isActive ? "bg-linear-to-br from-cyan-400 to-blue-500 text-slate-950" : "border border-white/8 bg-white/5 text-white hover:bg-white/10"}`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
-      </aside>
+        <aside
+          className={`fixed left-0 top-0 z-50 h-full w-64 border-r border-[#27272A] bg-[#111113] p-5 shadow-2xl transition-transform duration-200 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
+        >
+          <div className="mb-6 flex items-center justify-between border-b border-[#27272A]/50 pb-4">
+            <h2 className="text-sm font-bold tracking-tight text-[#FAFAFA]">
+              Navigation
+            </h2>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="flex h-6 w-6 items-center justify-center rounded-md border border-[#27272A] bg-transparent text-xs font-medium text-[#A1A1AA] transition-colors hover:bg-zinc-900 hover:text-[#FAFAFA]"
+              aria-label="Close sidebar"
+            >
+              ✕
+            </button>
+          </div>
 
-      <div>{children}</div>
+          <div className="space-y-1">
+            {navItems.map((item) => {
+              const isActive = pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => {
+                    router.push(item.path);
+                    setIsOpen(false);
+                  }}
+                  className={`w-full rounded-lg px-3 py-2 text-left text-xs font-medium transition-colors ${isActive
+                      ? "bg-[#27272A]/60 text-[#FAFAFA]"
+                      : "text-[#A1A1AA] hover:bg-zinc-900/60 hover:text-[#FAFAFA]"
+                    }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+          </div>
+        </aside>
+        <div>{children}</div>
+      </>
     </div>
   );
 }

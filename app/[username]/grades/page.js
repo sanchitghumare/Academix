@@ -1,6 +1,6 @@
 "use client";
 
-import React, {use, useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -214,52 +214,57 @@ export default function Page({ params }) {
   const autoGradePreview = getAutoGrade(form.endSem, form.midSem, form.ca);
 
   return (
-    <main className="min-h-screen bg-slate-950 px-4 pb-20 pt-8 text-white md:px-8">
-      <div className="mx-auto max-w-7xl space-y-8">
-        <section className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+    <main className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
+      <div className="mx-auto max-w-5xl px-6 py-12">
+        {/* Header Section */}
+        <section className="mb-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200">
-                Grade Tracker
-              </p>
-              <h1 className="text-3xl font-black tracking-tight md:text-5xl">My Grades</h1>
-              <p className="mt-2 max-w-2xl text-sm text-slate-300 md:text-base">
-                Add subject-wise grades, track semester performance, and estimate SGPA instantly.
+              <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">My Grades</h1>
+              <p className="mt-2 text-sm text-[#A1A1AA]">
+                Track subject-wise grades, calculate semester performance, and estimate SGPA.
               </p>
             </div>
 
             <button
               onClick={() => router.push(`/${username}`)}
-              className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
             >
               Back to Dashboard
             </button>
           </div>
 
-          <div className="mt-7 grid grid-cols-2 gap-3 md:grid-cols-4">
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Subjects</p>
-              <p className="mt-2 text-2xl font-extrabold">{stats.totalSubjects}</p>
+          {/* Stats Grid */}
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+              <p className="text-xs font-medium text-[#A1A1AA]">Subjects</p>
+              <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{stats.totalSubjects}</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Credits</p>
-              <p className="mt-2 text-2xl font-extrabold">{stats.totalCredits}</p>
+            <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+              <p className="text-xs font-medium text-[#A1A1AA]">Credits</p>
+              <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{stats.totalCredits}</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">SGPA</p>
-              <p className="mt-2 text-2xl font-extrabold text-emerald-300">{stats.sgpa.toFixed(2)}</p>
+            <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+              <p className="text-xs font-medium text-[#A1A1AA]">SGPA</p>
+              <p className="mt-2 text-2xl font-bold text-emerald-400">{stats.sgpa.toFixed(2)}</p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Avg Marks</p>
-              <p className="mt-2 text-2xl font-extrabold text-cyan-300">{stats.avgMarks.toFixed(1)}</p>
+            <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+              <p className="text-xs font-medium text-[#A1A1AA]">Avg Marks</p>
+              <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{stats.avgMarks.toFixed(1)}</p>
             </div>
           </div>
         </section>
 
+        <div className="mb-8">
+          <hr className="border-[#27272A]" />
+        </div>
+
+        {/* Form and Entries Layout */}
         <section className="grid gap-6 lg:grid-cols-5">
-          <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 lg:col-span-2">
-            <h2 className="text-xl font-black">Add / Update Grade</h2>
-            <p className="mt-1 text-sm text-slate-300">Saving the same subject updates existing grade entry.</p>
+          {/* Form Side */}
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-6 lg:col-span-2">
+            <h2 className="text-base font-bold text-[#FAFAFA]">Add / Update Grade</h2>
+            <p className="mt-1 text-xs text-[#A1A1AA]">Saving an existing subject name updates its entry.</p>
 
             <form onSubmit={handleSubmit} className="mt-5 space-y-3">
               <input
@@ -267,7 +272,7 @@ export default function Page({ params }) {
                 value={form.subjectname}
                 onChange={(e) => handleFormChange("subjectname", e.target.value)}
                 placeholder="Subject Name"
-                className="w-full rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
               />
 
               <div className="grid grid-cols-2 gap-3">
@@ -278,7 +283,7 @@ export default function Page({ params }) {
                   value={form.semester}
                   onChange={(e) => handleFormChange("semester", e.target.value)}
                   placeholder="Semester"
-                  className="rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 />
                 <input
                   type="number"
@@ -287,7 +292,7 @@ export default function Page({ params }) {
                   value={form.credits}
                   onChange={(e) => handleFormChange("credits", e.target.value)}
                   placeholder="Credits"
-                  className="rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 />
               </div>
 
@@ -299,7 +304,7 @@ export default function Page({ params }) {
                   value={form.endSem}
                   onChange={(e) => handleFormChange("endSem", e.target.value)}
                   placeholder="Endsem / 60"
-                  className="rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 />
                 <input
                   type="number"
@@ -308,7 +313,7 @@ export default function Page({ params }) {
                   value={form.midSem}
                   onChange={(e) => handleFormChange("midSem", e.target.value)}
                   placeholder="Midsem / 20"
-                  className="rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 />
                 <input
                   type="number"
@@ -317,41 +322,43 @@ export default function Page({ params }) {
                   value={form.ca}
                   onChange={(e) => handleFormChange("ca", e.target.value)}
                   placeholder="CA / 20"
-                  className="rounded-xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 />
               </div>
 
-              <div className="rounded-xl border border-cyan-300/30 bg-cyan-400/10 px-4 py-3 text-sm">
-                <p className="text-slate-200">
-                  Auto Grade: <span className="font-extrabold text-cyan-200">{autoGradePreview.label}</span>
+              {/* Auto Grade Preview Box */}
+              <div className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2.5 text-xs">
+                <p className="text-[#A1A1AA]">
+                  Auto Grade: <span className="font-semibold text-[#FAFAFA]">{autoGradePreview.label}</span>
                   {" "}(Pointer {autoGradePreview.point})
                 </p>
-                <p className="mt-1 text-xs text-slate-300">
-                  Calculated from total: {(Number(form.endSem) || 0) + (Number(form.midSem) || 0) + (Number(form.ca) || 0)} / 100 ({autoGradePreview.percentage.toFixed(1)}%)
+                <p className="mt-1 text-[11px] text-[#A1A1AA]/70">
+                  Total: {(Number(form.endSem) || 0) + (Number(form.midSem) || 0) + (Number(form.ca) || 0)} / 100 ({autoGradePreview.percentage.toFixed(1)}%)
                 </p>
               </div>
 
               <button
                 type="submit"
                 disabled={isSaving}
-                className="w-full rounded-xl bg-cyan-400 px-4 py-3 text-sm font-black text-slate-950 transition hover:brightness-95 disabled:opacity-60"
+                className="w-full rounded-lg bg-[#FAFAFA] py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-50"
               >
                 {isSaving ? "Saving..." : "Save Grade"}
               </button>
             </form>
 
             {statusText && (
-              <p className="mt-3 text-sm font-semibold text-cyan-200">{statusText}</p>
+              <p className="mt-3 text-xs font-medium text-[#A1A1AA]">{statusText}</p>
             )}
           </div>
 
-          <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 lg:col-span-3">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <h2 className="text-xl font-black">Grade Entries</h2>
+          {/* Entries Side */}
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-6 lg:col-span-3">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-[#27272A]/50 pb-4">
+              <h2 className="text-base font-bold text-[#FAFAFA]">Grade Entries</h2>
               <select
                 value={activeSemester}
                 onChange={(e) => setActiveSemester(e.target.value)}
-                className="rounded-xl border border-slate-700 bg-slate-950/80 px-3 py-2 text-sm outline-none transition focus:border-cyan-300"
+                className="rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-1.5 text-xs font-medium text-[#FAFAFA] outline-none transition-colors focus:border-zinc-500"
               >
                 <option value="all">All Semesters</option>
                 {semesters.map((sem) => (
@@ -361,45 +368,48 @@ export default function Page({ params }) {
             </div>
 
             {isLoading ? (
-              <div className="rounded-2xl border border-white/10 bg-slate-950/60 p-8 text-center text-sm text-slate-300">
+              <div className="rounded-lg border border-[#27272A] bg-[#09090B] p-8 text-center text-xs text-[#A1A1AA]">
                 Loading grades...
               </div>
             ) : visibleGrades.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-white/20 bg-slate-950/60 p-8 text-center text-sm text-slate-300">
+              <div className="rounded-lg border border-dashed border-[#27272A] bg-[#09090B] p-8 text-center text-xs text-[#A1A1AA]">
                 No grades found for this filter.
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {visibleGrades.map((item) => (
-                  <article key={item._id || `${item.subjectname}-${item.semester}`} className="rounded-2xl border border-white/10 bg-slate-950/60 p-4">
-                    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <article key={item._id || `${item.subjectname}-${item.semester}`} className="rounded-lg border border-[#27272A] bg-[#09090B] p-3.5">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                       <div>
-                        <h3 className="text-lg font-bold">{item.subjectname}</h3>
-                        <p className="text-sm text-slate-300">Semester {item.semester} | Credits {item.credits}</p>
+                        <h3 className="text-sm font-semibold text-[#FAFAFA]">{item.subjectname}</h3>
+                        <p className="mt-0.5 text-xs text-[#A1A1AA]">Semester {item.semester} • Credits {item.credits}</p>
                       </div>
+
                       <div className="flex items-center gap-4">
                         <div className="text-right">
-                          <p className="text-xs uppercase tracking-wide text-slate-400">Grade</p>
-                          <p className="text-xl font-black text-emerald-300">{item.grade}</p>
+                          <p className="text-[10px] uppercase font-medium text-[#A1A1AA]">Grade</p>
+                          <p className="text-base font-bold text-emerald-400">{item.grade}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-xs uppercase tracking-wide text-slate-400">Marks</p>
-                          <p className="text-xl font-black text-cyan-300">{item.endSem + item.midSem + item.ca}</p>
-                          <p className="text-[11px] text-slate-400">E:{item.endSem} M:{item.midSem} CA:{item.ca}</p>
+                          <p className="text-[10px] uppercase font-medium text-[#A1A1AA]">Marks</p>
+                          <p className="text-base font-bold text-[#FAFAFA]">{item.endSem + item.midSem + item.ca}</p>
+                          <p className="text-[10px] text-[#A1A1AA]/60">E:{item.endSem} M:{item.midSem} CA:{item.ca}</p>
                         </div>
-                        <button
-                          onClick={() => handleEdit(item)}
-                          className="rounded-xl border border-white/20 bg-white/5 px-3 py-2 text-sm font-semibold transition hover:bg-white/10"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(item._id)}
-                          disabled={deletingId === item._id}
-                          className="rounded-xl border border-rose-300/30 bg-rose-400/10 px-3 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-400/20 disabled:opacity-60"
-                        >
-                          {deletingId === item._id ? "Deleting..." : "Delete"}
-                        </button>
+                        <div className="flex items-center gap-1.5 pl-2">
+                          <button
+                            onClick={() => handleEdit(item)}
+                            className="rounded-md border border-[#27272A] bg-transparent px-2.5 py-1 text-xs font-medium text-[#FAFAFA] transition-colors hover:bg-zinc-900/50"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(item._id)}
+                            disabled={deletingId === item._id}
+                            className="rounded-md border border-[#27272A] bg-transparent px-2.5 py-1 text-xs font-medium text-rose-400/80 transition-colors hover:border-rose-900/50 hover:text-rose-400 disabled:opacity-50"
+                          >
+                            {deletingId === item._id ? "..." : "Delete"}
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </article>

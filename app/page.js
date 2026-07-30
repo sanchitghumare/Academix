@@ -1,132 +1,136 @@
 import Link from "next/link";
 
 export default function Home() {
-  const features = [
+  const cards = [
     {
-      title: "Attendance Insights",
-      description: "See your subject-wise percentage and prediction instantly so you always know where you stand.",
-      icon: "../calendar.png",
-      tone: "from-cyan-400/30 to-emerald-300/20",
+      icon: "📅",
+      title: "Attendance",
+      description: "Know exactly how many classes you can miss.",
     },
     {
-      title: "Smart Planning",
-      description: "Plan when to attend and when it is safe to skip without dropping below your minimum target.",
-      icon: "../book.png",
-      tone: "from-orange-400/30 to-amber-300/20",
+      icon: "📚",
+      title: "Resources",
+      description: "Organize notes, PYQs, and study material.",
     },
     {
-      title: "Goal Tracking",
-      description: "Set performance goals and track your momentum with a dashboard designed for daily use.",
-      icon: "../gpa.png",
-      tone: "from-violet-400/30 to-pink-300/20",
+      icon: "📊",
+      title: "GPA",
+      description: "Track semester performance without maintaining Excel sheets.",
+      
+    },
+    {
+      icon: "⏰",
+      title: "Planner",
+      description: "Know today's timetable and upcoming lectures.",
+     
     },
   ];
 
   return (
-    <main className="relative overflow-hidden px-4 pb-20 pt-10 md:px-8">
-      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 top-24 h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
+    <div className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
+      {/* 1. Navbar */}
+      <nav className="mx-auto flex max-w-5xl items-center justify-between border-b border-[#27272A]/50 px-6 py-6">
+        <span className="text-lg font-bold tracking-tight">Stratos</span>
+        <div className="flex items-center gap-4 text-sm font-medium">
+          <Link
+            href="/login"
+            className="text-[#A1A1AA] transition-colors hover:text-[#FAFAFA]"
+          >
+            Sign In
+          </Link>
+        </div>
+      </nav>
 
-      <section className="mx-auto grid max-w-6xl items-center gap-10 rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:grid-cols-2 md:p-10">
-        <div>
-          <p className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-400/8 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-            Student Workflow, Simplified
-          </p>
-          <h1 className="mt-4 text-4xl font-black leading-tight tracking-tight md:text-6xl">
-            Turn attendance into your competitive edge.
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-slate-300 md:text-base">
-            Stratos helps you track classes, predict safe skips, and keep your goals on target with clean real-time analytics.
-          </p>
+      {/* 2. Hero Section */}
+      <section className="mx-auto max-w-3xl px-6 pb-16 pt-24 text-center">
+        <h1 className="text-5xl font-bold leading-tight tracking-tight text-[#FAFAFA] sm:text-6xl">
+          Academic Command Center <br />
+          <span className="text-[#A1A1AA]">for College Students.</span>
+        </h1>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              href="/login"
-              className="rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-6 py-3 text-sm font-black text-slate-950 transition hover:brightness-95"
-            >
-              Start Tracking
-            </Link>
-            <Link
-              href="/dashboard"
-              className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10"
-            >
-              Open Dashboard
-            </Link>
-          </div>
+        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#A1A1AA] sm:text-lg">
+          Attendance. GPA. Resources. Timetable. <br />
+          Everything you need to manage your semester, in one place.
+        </p>
+
+        <div className="mt-8 flex items-center justify-center gap-3">
+          <Link
+            href="/login"
+            className="rounded-lg bg-[#FAFAFA] px-5 py-2.5 text-sm font-semibold text-black transition-colors hover:bg-zinc-200"
+          >
+            Get Started
+          </Link>
+          
         </div>
 
-        <div className="relative mx-auto w-full max-w-sm">
-          <div className="relative rounded-3xl border border-white/8 bg-[#0f1728] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.35)]">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold text-slate-300">Live Snapshot</p>
-              <span className="rounded-full bg-emerald-400/20 px-2 py-1 text-xs font-bold text-emerald-300">ON TRACK</span>
-            </div>
-            <p className="mt-5 text-5xl font-black text-white">84%</p>
-            <p className="mt-1 text-sm text-slate-400">Overall attendance</p>
-            <div className="mt-5 h-2 w-full rounded-full bg-slate-800">
-              <div className="h-full w-[84%] rounded-full bg-linear-to-r from-cyan-400 to-emerald-400" />
-            </div>
-            <div className="mt-5 grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-xl border border-white/8 bg-white/4 p-3">
-                <p className="text-slate-400">Safe Subjects</p>
-                <p className="mt-1 text-xl font-black text-emerald-300">5</p>
-              </div>
-              <div className="rounded-xl border border-white/8 bg-white/4 p-3">
-                <p className="text-slate-400">Need Focus</p>
-                <p className="mt-1 text-xl font-black text-amber-300">2</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <p className="mt-14 text-xs font-medium tracking-wide text-[#A1A1AA]">
+          Built for students, not spreadsheets.
+        </p>
       </section>
 
-      <section className="mx-auto mt-14 max-w-6xl">
-        <div className="mb-6 flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-black tracking-tight md:text-4xl">What you get</h2>
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Built for daily consistency</p>
-        </div>
+      {/* Divider */}
+      <div className="mx-auto max-w-5xl px-6">
+        <hr className="border-[#27272A]" />
+      </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
-          {features.map((feature) => (
-            <article
-              key={feature.title}
-              className="group relative overflow-hidden rounded-2xl border border-white/8 bg-[#121a2b] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/25"
+      {/* 3. Everything in one place */}
+      <section className="mx-auto max-w-5xl px-6 py-20">
+        <h2 className="text-2xl font-bold tracking-tight text-[#FAFAFA]">
+          Everything in one place.
+        </h2>
+
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {cards.map((card) => (
+            <div
+              key={card.title}
+              className="group flex flex-col justify-between rounded-xl border border-[#27272A] bg-[#111113] p-6 transition-all hover:-translate-y-1 hover:border-zinc-600"
             >
-              <div className={`pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-linear-to-br ${feature.tone} opacity-70 blur-2xl`} />
-              <img
-                src={feature.icon}
-                width={52}
-                height={52}
-                alt={feature.title}
-                className="rounded-xl border border-white/8 bg-slate-800 p-2"
-              />
-              <h3 className="mt-4 text-xl font-extrabold">{feature.title}</h3>
-              <p className="mt-2 text-sm text-slate-300">{feature.description}</p>
-            </article>
+              <div>
+                <span className="text-2xl" role="img" aria-label={card.title}>
+                  {card.icon}
+                </span>
+                <h3 className="mt-4 text-lg font-semibold text-[#FAFAFA]">
+                  {card.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#A1A1AA]">
+                  {card.description}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto mt-14 max-w-6xl rounded-3xl border border-white/8 bg-[#121a2b] p-6 md:p-10">
-        <div className="grid items-center gap-6 md:grid-cols-2">
-          <div>
-            <h2 className="text-3xl font-black leading-tight md:text-5xl">Ready to stay ahead every week?</h2>
-            <p className="mt-3 text-sm text-slate-300 md:text-base">
-              Join Stratos and make attendance planning fast, clear, and stress-free.
-            </p>
-          </div>
-          <div className="flex flex-wrap justify-start gap-3 md:justify-end">
-            <Link href="/login" className="rounded-xl bg-linear-to-br from-cyan-400 to-blue-500 px-6 py-3 text-sm font-black text-slate-950">
-              Continue with Sign In
-            </Link>
-            <Link href="/dashboard" className="rounded-xl border border-white/10 px-6 py-3 text-sm font-bold text-white hover:bg-white/10">
-              Dashboard Preview
-            </Link>
-          </div>
+      {/* Divider */}
+      <div className="mx-auto max-w-5xl px-6">
+        <hr className="border-[#27272A]" />
+      </div>
+
+      
+
+      {/* Divider */}
+      <div className="mx-auto max-w-5xl px-6">
+        <hr className="border-[#27272A]" />
+      </div>
+
+      {/* 5. Footer CTA */}
+      <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <h2 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">
+          Ready to organize your semester?
+        </h2>
+        <p className="mt-3 text-sm text-[#A1A1AA]">
+          Start using Stratos today.
+        </p>
+
+        <div className="mt-8">
+          <Link
+            href="/login"
+            className="inline-block rounded-lg bg-[#FAFAFA] px-6 py-3 text-sm font-semibold text-black transition-colors hover:bg-zinc-200"
+          >
+            Get Started
+          </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
-
-

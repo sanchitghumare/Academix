@@ -140,17 +140,17 @@ const page = ({ params }) => {
         const currentQuestion = inputQuestion;
         const activeFileName = selectedResource.fileName || selectedResource.title;
 
-        setInputQuestion(""); 
+        setInputQuestion("");
         setMessages(prev => [...prev, { role: "user", text: currentQuestion }]);
         setLoading(true);
 
         try {
-            const res = await fetch("/api/resources/query", { 
+            const res = await fetch("/api/resources/query", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ filename: activeFileName, question: currentQuestion }),
             });
-            
+
             const data = await res.json();
             setMessages(prev => [...prev, { role: "ai", text: data.answer || data.error || "No response received." }]);
         } catch (err) {
@@ -160,7 +160,7 @@ const page = ({ params }) => {
             setLoading(false);
         }
     };
-    const GenerateQuiz = async () => {  
+    const GenerateQuiz = async () => {
         if (!selectedResource) return;
 
         const activeFileName = selectedResource.fileName || selectedResource.title;
@@ -168,7 +168,7 @@ const page = ({ params }) => {
         setLoading(true);
 
         try {
-            const res = await fetch("/api/resources/quiz", { 
+            const res = await fetch("/api/resources/quiz", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ filename: activeFileName, resourceTitle: selectedResource.title }),
@@ -211,47 +211,49 @@ const page = ({ params }) => {
 
     const currentQuizCount = quizAnswers.filter((answer) => answer !== null && answer !== undefined).length;
     return (
-        <main className="min-h-screen bg-transparent px-4 py-10 text-white md:px-8">
-            <div className="mx-auto max-w-7xl">
+        <main className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
+            <div className="mx-auto max-w-5xl px-6 py-12">
                 {/* Header Metrics Section */}
-            <section className="rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-                    <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">
-                        Shared Study Hub
-                    </p>
-                    <h1 className="text-3xl font-black tracking-tight md:text-5xl">Resources</h1>
-                    <p className="mt-3 max-w-2xl text-sm text-slate-300 md:text-base">
-                        Upload notes, PYQs and reference files for quick access across your semester.
-                    </p>
+                <section className="mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Resources</h1>
+                        <p className="mt-2 text-sm text-[#A1A1AA]">
+                            Upload notes, PYQs, and reference files for quick access across your semester.
+                        </p>
+                    </div>
 
-                    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                            <p className="text-xs uppercase tracking-wider text-slate-400">Total Files</p>
-                            <p className="mt-2 text-2xl font-extrabold">{resources.length}</p>
+                    <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                        <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+                            <p className="text-xs font-medium text-[#A1A1AA]">Total Files</p>
+                            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{resources.length}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                            <p className="text-xs uppercase tracking-wider text-slate-400">Filtered</p>
-                            <p className="mt-2 text-2xl font-extrabold">{filteredResources.length}</p>
+                        <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+                            <p className="text-xs font-medium text-[#A1A1AA]">Filtered</p>
+                            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{filteredResources.length}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                            <p className="text-xs uppercase tracking-wider text-slate-400">Category</p>
-                            <p className="mt-2 text-2xl font-extrabold text-cyan-300">{filter}</p>
+                        <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+                            <p className="text-xs font-medium text-[#A1A1AA]">Category</p>
+                            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{filter}</p>
                         </div>
-                        <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                            <p className="text-xs uppercase tracking-wider text-slate-400">User</p>
-                            <p className="mt-2 truncate text-2xl font-extrabold text-emerald-300">{username}</p>
+                        <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+                            <p className="text-xs font-medium text-[#A1A1AA]">User</p>
+                            <p className="mt-2 truncate text-2xl font-bold text-[#FAFAFA]">{username}</p>
                         </div>
                     </div>
                 </section>
 
+                <div className="mb-8">
+                    <hr className="border-[#27272A]" />
+                </div>
+
                 {/* Main Action Workspaces */}
-                <section className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_1.9fr]">
-                    
+                <section className="grid gap-6 lg:grid-cols-[1.1fr_1.9fr]">
                     {/* Left Column Stack: Upload Input + AI Chat Box */}
                     <div className="space-y-6">
                         {/* 1. Upload Component Form */}
-                        <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5">
-                            <h2 className="text-xl font-black">Upload Resource</h2>
-                            <p className="mt-1 text-sm text-slate-300">Add title, subject, category and file.</p>
+                        <div className="rounded-xl border border-[#27272A] bg-[#111113] p-6">
+                            <h2 className="text-base font-bold text-[#FAFAFA]">Upload Resource</h2>
+                            <p className="mt-1 text-xs text-[#A1A1AA]">Add title, subject, category and file.</p>
 
                             <form onSubmit={(e) => handleUpload(e)} className="mt-5 space-y-3">
                                 <input
@@ -259,19 +261,19 @@ const page = ({ params }) => {
                                     value={form.title}
                                     onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value || "" }))}
                                     placeholder="Title (e.g. Unit 3 Notes)"
-                                    className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm outline-none transition focus:border-cyan-300 text-white"
+                                    className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                                 />
                                 <input
                                     type="text"
                                     value={form.subject}
                                     onChange={(e) => setForm((prev) => ({ ...prev, subject: e.target.value }))}
                                     placeholder="Subject (e.g. DBMS)"
-                                    className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm outline-none transition focus:border-cyan-300 text-white"
+                                    className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                                 />
                                 <select
                                     value={form.category}
                                     onChange={(e) => setForm((prev) => ({ ...prev, category: e.target.value }))}
-                                    className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-2.5 text-sm outline-none transition focus:border-cyan-300 text-white"
+                                    className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] outline-none transition-colors focus:border-zinc-500"
                                 >
                                     {categories.map((item) => (
                                         <option key={item} value={item}>{item}</option>
@@ -283,12 +285,12 @@ const page = ({ params }) => {
                                         const selectedFile = e.target.files?.[0] || null;
                                         setForm((prev) => ({ ...prev, file: selectedFile }));
                                     }}
-                                    className="w-full rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-cyan-400 file:px-3 file:py-2 file:font-semibold file:text-slate-950 text-white"
+                                    className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-1.5 text-xs text-[#FAFAFA] file:mr-3 file:rounded-md file:border-0 file:bg-[#FAFAFA] file:px-3 file:py-1 file:text-xs file:font-semibold file:text-black hover:file:bg-zinc-200"
                                 />
                                 <button
                                     type="submit"
                                     disabled={isUploading}
-                                    className="w-full rounded-xl bg-cyan-400 px-4 py-2.5 text-sm font-black text-slate-950 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-70"
+                                    className="w-full rounded-lg bg-[#FAFAFA] py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-50"
                                 >
                                     {isUploading ? "Uploading..." : "Upload"}
                                 </button>
@@ -296,31 +298,30 @@ const page = ({ params }) => {
                         </div>
 
                         {/* 2. Interactive AI Chat Assistant Box */}
-                        <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5 flex flex-col gap-5">
-                            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                                <div className="border-b border-white/8 pb-3">
-                                    <h2 className="text-xl font-black text-cyan-300">Stratos AI Study Chat</h2>
-                                    <p className="mt-0.5 truncate text-xs text-slate-400">
-                                        {selectedResource ? `Active Context: ${selectedResource.title}` : "Select a document card to talk with AI"}
+                        <div className="flex flex-col gap-5 rounded-xl border border-[#27272A] bg-[#111113] p-6">
+                            <div className="rounded-lg border border-[#27272A] bg-[#09090B] p-4">
+                                <div className="border-b border-[#27272A]/50 pb-3">
+                                    <h2 className="text-sm font-bold text-[#FAFAFA]">AI Study Chat</h2>
+                                    <p className="mt-0.5 truncate text-[11px] text-[#A1A1AA]">
+                                        {selectedResource ? `Active Context: ${selectedResource.title}` : "Select a document card to lock context"}
                                     </p>
                                 </div>
 
-                                <div className="flex-1 overflow-y-auto space-y-3 py-4 pr-1 text-sm scrollbar-thin">
+                                <div className="flex-1 space-y-2.5 overflow-y-auto py-4 pr-1 text-xs">
                                     {messages.length === 0 ? (
-                                        <div className="flex h-full items-center justify-center px-4 text-center text-xs text-slate-500">
+                                        <div className="flex h-full items-center justify-center px-4 py-6 text-center text-xs text-[#A1A1AA]/60">
                                             {selectedResource
-                                                ? "Ask anything!"
-                                                : "Click a resource card's text block on the right to lock it into the AI context window."}
+                                                ? "Ask anything about this resource!"
+                                                : "Click a resource card on the right to lock it into AI context."}
                                         </div>
                                     ) : (
                                         messages.map((msg, idx) => (
                                             <div key={idx} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                                 <div
-                                                    className={`max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${
-                                                        msg.role === "user"
-                                                            ? "bg-cyan-500 font-medium text-slate-950"
-                                                            : "border border-white/5 bg-slate-800 text-slate-100"
-                                                    }`}
+                                                    className={`max-w-[85%] rounded-lg px-3 py-2 text-xs leading-relaxed ${msg.role === "user"
+                                                            ? "bg-[#FAFAFA] font-medium text-black"
+                                                            : "border border-[#27272A] bg-[#111113] text-[#FAFAFA]"
+                                                        }`}
                                                 >
                                                     {msg.text}
                                                 </div>
@@ -328,61 +329,62 @@ const page = ({ params }) => {
                                         ))
                                     )}
                                     {loading && (
-                                        <div className="font-mono text-[10px] tracking-wide text-cyan-400/70 animate-pulse">
-                                            Stratos AI running ...
+                                        <div className="text-[10px] text-[#A1A1AA] animate-pulse">
+                                            Stratos AI running...
                                         </div>
                                     )}
                                 </div>
 
-                                <form onSubmit={askAIAboutResource} className="flex gap-2 border-t border-white/8 pt-2">
+                                <form onSubmit={askAIAboutResource} className="flex gap-2 border-t border-[#27272A]/50 pt-2.5">
                                     <input
                                         type="text"
                                         placeholder={selectedResource ? "Query this document..." : "Lock a file context to begin"}
                                         disabled={!selectedResource || loading}
                                         value={inputQuestion}
                                         onChange={(e) => setInputQuestion(e.target.value)}
-                                        className="flex-1 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs outline-none transition focus:border-cyan-300 disabled:opacity-40"
+                                        className="flex-1 rounded-md border border-[#27272A] bg-[#111113] px-3 py-1.5 text-xs text-[#FAFAFA] placeholder-[#A1A1AA]/40 outline-none transition-colors focus:border-zinc-500 disabled:opacity-40"
                                     />
                                     <button
                                         type="submit"
                                         disabled={loading || !selectedResource || !inputQuestion.trim()}
-                                        className="rounded-xl bg-cyan-400 px-4 py-2 text-xs font-bold text-slate-950 transition-all hover:brightness-95 disabled:opacity-40"
+                                        className="rounded-md bg-[#FAFAFA] px-3 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-40"
                                     >
                                         Ask
                                     </button>
                                 </form>
                             </div>
 
-                            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-                                <div className="flex flex-col gap-3 border-b border-white/8 pb-3 sm:flex-row sm:items-center sm:justify-between">
+                            {/* Quiz Generation Section */}
+                            <div className="rounded-lg border border-[#27272A] bg-[#09090B] p-4">
+                                <div className="flex flex-col gap-3 border-b border-[#27272A]/50 pb-3 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
-                                        <h2 className="text-xl font-black text-emerald-300">Resource Quiz</h2>
-                                        <p className="mt-0.5 text-xs text-slate-400">
-                                            {selectedResource ? `Generate a 5-question quiz from ${selectedResource.title}` : "Select a resource to generate a quiz"}
+                                        <h2 className="text-sm font-bold text-[#FAFAFA]">Resource Quiz</h2>
+                                        <p className="mt-0.5 text-[11px] text-[#A1A1AA]">
+                                            {selectedResource ? `5-question quiz from ${selectedResource.title}` : "Select a resource to generate a quiz"}
                                         </p>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={GenerateQuiz}
                                         disabled={loading || !selectedResource}
-                                        className="rounded-xl bg-emerald-400 px-4 py-2 text-xs font-black text-slate-950 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-40"
+                                        className="rounded-md bg-[#FAFAFA] px-3 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-40"
                                     >
                                         {loading ? "Generating..." : "Generate Quiz"}
                                     </button>
                                 </div>
 
                                 {quizError && (
-                                    <p className="mt-3 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-xs text-rose-200">
+                                    <p className="mt-3 rounded-md border border-rose-900/50 bg-rose-950/20 px-3 py-2 text-xs text-rose-300">
                                         {quizError}
                                     </p>
                                 )}
 
                                 {quizData?.questions?.length ? (
                                     <div className="mt-4 space-y-4">
-                                        <div className="rounded-xl border border-white/8 bg-white/5 p-3 text-xs text-slate-300">
-                                            <p className="font-semibold text-white">{quizData.title}</p>
+                                        <div className="rounded-md border border-[#27272A] bg-[#111113] p-3 text-xs text-[#A1A1AA]">
+                                            <p className="font-semibold text-[#FAFAFA]">{quizData.title}</p>
                                             <p className="mt-1">{quizData.instructions}</p>
-                                            <p className="mt-2 text-cyan-300">
+                                            <p className="mt-2 text-[#FAFAFA]">
                                                 Current answers: {currentQuizCount}/{quizData.questions.length}
                                             </p>
                                         </div>
@@ -397,24 +399,23 @@ const page = ({ params }) => {
                                                 const correctLabel = String.fromCharCode(65 + question.correctIndex);
 
                                                 return (
-                                                    <div key={question.id || questionIndex} className="rounded-2xl border border-white/8 bg-[#121a2b] p-4">
+                                                    <div key={question.id || questionIndex} className="rounded-lg border border-[#27272A] bg-[#111113] p-3.5">
                                                         <div className="flex items-start justify-between gap-3">
                                                             <div>
-                                                                <p className="text-sm font-semibold text-white">
+                                                                <p className="text-xs font-semibold text-[#FAFAFA]">
                                                                     {questionIndex + 1}. {question.question}
                                                                 </p>
-                                                                <p className="mt-1 text-[11px] text-slate-400">
+                                                                <p className="mt-1 text-[11px] text-[#A1A1AA]">
                                                                     Your answer: {selectedLabel}
                                                                     {isSubmitted ? ` | Correct: ${correctLabel}` : ""}
                                                                 </p>
                                                             </div>
                                                             {isSubmitted && (
                                                                 <span
-                                                                    className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${
-                                                                        selectedAnswer === question.correctIndex
-                                                                            ? "bg-emerald-400/15 text-emerald-300"
-                                                                            : "bg-rose-400/15 text-rose-300"
-                                                                    }`}
+                                                                    className={`rounded-md px-2 py-0.5 text-[10px] font-semibold ${selectedAnswer === question.correctIndex
+                                                                            ? "bg-emerald-950/40 text-emerald-400 border border-emerald-800/40"
+                                                                            : "bg-rose-950/40 text-rose-400 border border-rose-800/40"
+                                                                        }`}
                                                                 >
                                                                     {selectedAnswer === question.correctIndex ? "Correct" : "Wrong"}
                                                                 </span>
@@ -433,15 +434,14 @@ const page = ({ params }) => {
                                                                         key={`${question.id || questionIndex}-${optionIndex}`}
                                                                         type="button"
                                                                         onClick={() => handleQuizAnswer(questionIndex, optionIndex)}
-                                                                        className={`rounded-xl border px-3 py-2 text-left text-xs transition ${
-                                                                            showCorrectState
-                                                                                ? "border-emerald-400/40 bg-emerald-400/15 text-emerald-100"
+                                                                        className={`rounded-md border px-3 py-1.5 text-left text-xs transition-colors ${showCorrectState
+                                                                                ? "border-emerald-700/60 bg-emerald-950/30 text-emerald-200"
                                                                                 : showWrongState
-                                                                                    ? "border-rose-400/40 bg-rose-400/15 text-rose-100"
+                                                                                    ? "border-rose-700/60 bg-rose-950/30 text-rose-200"
                                                                                     : isSelected
-                                                                                        ? "border-cyan-400/40 bg-cyan-400/15 text-cyan-100"
-                                                                                        : "border-white/8 bg-[#182238] text-slate-200 hover:border-white/15"
-                                                                        }`}
+                                                                                        ? "border-zinc-500 bg-[#27272A]/60 text-[#FAFAFA]"
+                                                                                        : "border-[#27272A] bg-[#09090B] text-[#A1A1AA] hover:border-zinc-700 hover:text-[#FAFAFA]"
+                                                                            }`}
                                                                     >
                                                                         <span className="mr-2 font-bold">{String.fromCharCode(65 + optionIndex)}.</span>
                                                                         {option}
@@ -451,7 +451,7 @@ const page = ({ params }) => {
                                                         </div>
 
                                                         {isSubmitted && question.explanation && (
-                                                            <p className="mt-3 rounded-xl border border-white/8 bg-white/5 px-3 py-2 text-[11px] text-slate-300">
+                                                            <p className="mt-3 rounded-md border border-[#27272A] bg-[#09090B] px-3 py-2 text-[11px] text-[#A1A1AA]">
                                                                 {question.explanation}
                                                             </p>
                                                         )}
@@ -460,24 +460,24 @@ const page = ({ params }) => {
                                             })}
                                         </div>
 
-                                        <div className="flex flex-col gap-3 rounded-2xl border border-white/8 bg-[#0f1728] p-4 sm:flex-row sm:items-center sm:justify-between">
-                                            <p className="text-sm text-slate-300">
+                                        <div className="flex flex-col gap-3 rounded-lg border border-[#27272A] bg-[#111113] p-3.5 sm:flex-row sm:items-center sm:justify-between">
+                                            <p className="text-xs text-[#A1A1AA]">
                                                 {quizScore === null
-                                                    ? "Answer all or some questions, then submit to see your score."
+                                                    ? "Answer questions, then submit to see your score."
                                                     : `Final score: ${quizScore}/${quizData.questions.length}`}
                                             </p>
                                             <button
                                                 type="button"
                                                 onClick={submitQuiz}
                                                 disabled={quizSubmitting || !quizData.questions.length}
-                                                className="rounded-xl bg-white px-4 py-2 text-xs font-black text-slate-950 transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
+                                                className="rounded-md bg-[#FAFAFA] px-3.5 py-1.5 text-xs font-semibold text-black transition-colors hover:bg-zinc-200 disabled:opacity-40"
                                             >
                                                 {quizSubmitting ? "Scoring..." : quizScore === null ? "Submit Quiz" : "Rescore"}
                                             </button>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="mt-4 rounded-2xl border border-dashed border-white/15 bg-white/5 p-6 text-center text-sm text-slate-400">
+                                    <div className="mt-4 rounded-lg border border-dashed border-[#27272A] bg-[#09090B] p-6 text-center text-xs text-[#A1A1AA]">
                                         No quiz generated yet.
                                     </div>
                                 )}
@@ -486,13 +486,13 @@ const page = ({ params }) => {
                     </div>
 
                     {/* Right Column Layout: Display Resources Grid List */}
-                    <div className="rounded-3xl border border-white/8 bg-[#121a2b] p-5">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <h2 className="text-xl font-black">All Resources</h2>
+                    <div className="rounded-xl border border-[#27272A] bg-[#111113] p-6">
+                        <div className="flex items-center justify-between border-b border-[#27272A]/50 pb-4">
+                            <h2 className="text-base font-bold text-[#FAFAFA]">All Resources</h2>
                             <select
                                 value={filter}
                                 onChange={(e) => setFilter(e.target.value)}
-                                className="rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-sm outline-none transition focus:border-cyan-300"
+                                className="rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-1.5 text-xs font-medium text-[#FAFAFA] outline-none transition-colors focus:border-zinc-500"
                             >
                                 <option value="All">All</option>
                                 {categories.map((item) => (
@@ -502,30 +502,29 @@ const page = ({ params }) => {
                         </div>
 
                         {isLoading ? (
-                            <div className="mt-6 rounded-2xl border border-white/8 bg-[#0f1728] p-6 text-center text-sm text-slate-300">
+                            <div className="mt-6 rounded-lg border border-[#27272A] bg-[#09090B] p-8 text-center text-xs text-[#A1A1AA]">
                                 Loading resources...
                             </div>
                         ) : filteredResources.length === 0 ? (
-                            <div className="mt-6 rounded-2xl border border-dashed border-white/20 bg-white/5 p-8 text-center">
-                                <p className="text-base font-semibold">No resources found</p>
-                                <p className="mt-1 text-sm text-slate-300">Upload your first file or change category filter.</p>
+                            <div className="mt-6 rounded-lg border border-dashed border-[#27272A] bg-[#09090B] p-8 text-center">
+                                <p className="text-sm font-semibold text-[#FAFAFA]">No resources found</p>
+                                <p className="mt-1 text-xs text-[#A1A1AA]">Upload your first file or change category filter.</p>
                             </div>
                         ) : (
-                            <div className="mt-5 grid gap-3">
+                            <div className="mt-4 space-y-2.5">
                                 {filteredResources.map((item) => {
                                     const isSelected = selectedResource?._id === item._id;
                                     return (
-                                        <div 
-                                            key={item._id} 
-                                            className={`rounded-2xl border p-4 transition-all duration-200 ${
-                                                isSelected 
-                                                    ? 'border-cyan-400 bg-slate-800/90 shadow-lg shadow-cyan-500/5' 
-                                                    : 'border-white/10 bg-slate-800/70 hover:border-white/20'
-                                            }`}
+                                        <div
+                                            key={item._id}
+                                            className={`rounded-lg border p-4 transition-all duration-150 ${isSelected
+                                                    ? 'border-zinc-500 bg-[#09090B]'
+                                                    : 'border-[#27272A] bg-[#09090B] hover:border-zinc-700'
+                                                }`}
                                         >
                                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                                 {/* Clickable text metadata wrapper block to set active context target */}
-                                                <div 
+                                                <div
                                                     className="flex-1 cursor-pointer group"
                                                     onClick={() => {
                                                         setSelectedResource(item);
@@ -536,33 +535,33 @@ const page = ({ params }) => {
                                                         setQuizError("");
                                                     }}
                                                 >
-                                                    <p className={`text-base font-bold transition-colors ${isSelected ? 'text-cyan-300' : 'text-white group-hover:text-cyan-400'}`}>
+                                                    <p className={`text-sm font-semibold transition-colors ${isSelected ? 'text-[#FAFAFA]' : 'text-[#FAFAFA] group-hover:text-zinc-300'}`}>
                                                         {item.title}
                                                     </p>
-                                                    <p className="mt-1 text-sm text-slate-300">{item.subject}</p>
-                                                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                                                        <span className="rounded-full border border-cyan-300/30 bg-cyan-400/10 px-2.5 py-1 text-cyan-200">{item.category || "Notes"}</span>
+                                                    <p className="mt-0.5 text-xs text-[#A1A1AA]">{item.subject}</p>
+                                                    <div className="mt-2 flex flex-wrap gap-2 text-[10px]">
+                                                        <span className="rounded-md border border-[#27272A] bg-[#111113] px-2 py-0.5 text-[#A1A1AA]">{item.category || "Notes"}</span>
                                                         {item.createdAt && (
-                                                            <span className="rounded-full border border-white/20 bg-white/5 px-2.5 py-1 text-slate-200">{formatDate(item.createdAt)}</span>
+                                                            <span className="rounded-md border border-[#27272A] bg-[#111113] px-2 py-0.5 text-[#A1A1AA]">{formatDate(item.createdAt)}</span>
                                                         )}
                                                         {isSelected && (
-                                                            <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-emerald-300 font-mono text-[10px]">Active Context</span>
+                                                            <span className="rounded-md border border-emerald-800/40 bg-emerald-950/40 px-2 py-0.5 text-emerald-400 font-medium">Active Context</span>
                                                         )}
                                                     </div>
                                                 </div>
 
-                                                <div className="flex gap-2 items-center self-end sm:self-start">
+                                                <div className="flex gap-1.5 items-center self-end sm:self-start">
                                                     <a
                                                         href={getOpenUrl(item)}
                                                         target="_blank"
                                                         rel="noreferrer"
-                                                        className="rounded-lg bg-cyan-400 px-3 py-2 text-xs font-bold text-slate-950 transition hover:brightness-95 text-center"
+                                                        className="rounded-md bg-[#FAFAFA] px-2.5 py-1 text-xs font-medium text-black transition-colors hover:bg-zinc-200 text-center"
                                                     >
                                                         Open
                                                     </a>
                                                     <button
                                                         onClick={() => handleDelete(item._id)}
-                                                        className="rounded-lg border border-rose-300/30 bg-rose-500/10 px-3 py-2 text-xs font-bold text-rose-200 transition hover:bg-rose-500/20"
+                                                        className="rounded-md border border-[#27272A] bg-transparent px-2.5 py-1 text-xs font-medium text-rose-400/80 transition-colors hover:border-rose-900/50 hover:text-rose-400"
                                                     >
                                                         Delete
                                                     </button>

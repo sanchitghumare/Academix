@@ -3,6 +3,7 @@ import React, { use, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import AttendanceCard from '@/components/Attendancecard';
 import { useRouter } from 'next/navigation';
+import Navbar from '@/components/navbar';
 
 export default function Dashboard({ params }) {
   const { data: session, status } = useSession();
@@ -42,7 +43,7 @@ export default function Dashboard({ params }) {
       console.error("Error fetching subjects:", error);
     }
   };
-  
+
   const getNextlec = () => {
     const dayKeys = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -363,89 +364,91 @@ export default function Dashboard({ params }) {
     if (sub.total === 0) return true;
     return (sub.attended / sub.total) * 100 >= (sub.minRequired + 10);
   }).length;
-
   return (
-    <div className="relative min-h-screen overflow-hidden bg-slate-950 px-4 pb-24 pt-8 text-white md:px-8">
-      <div className="pointer-events-none absolute -left-20 top-10 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-10 h-72 w-72 rounded-full bg-emerald-400/20 blur-3xl" />
-
-      <div className="relative mx-auto w-full max-w-7xl">
-
-        <section className="mt-8 rounded-3xl border border-white/8 bg-[#121a2b] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-            <div className="max-w-2xl">
-              <p className="mb-3 inline-flex rounded-full border border-cyan-300/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-cyan-200">
-                Attendance Command Center
-              </p>
-              <h1 className="text-3xl font-black tracking-tight md:text-5xl">My Attendance</h1>
-              <p className="mt-3 text-sm text-slate-300 md:text-base">
-                Track every subject, see where you can safely skip, and spot at-risk classes before they hurt your percentage.
-              </p>
-            </div>
-
-            <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto lg:flex-col lg:items-stretch">
-              <button
-                onClick={() => router.push(`/${username}/timetable`)}
-                className="rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                Set Timetable
-              </button>
-              <label className="flex items-center justify-between gap-3 rounded-xl border border-white/8 bg-[#0f1728] px-3 py-2.5 text-sm text-slate-100">
-                <span className="whitespace-nowrap">Simulate Skipping Today</span>
-                <input
-                  type="checkbox"
-                  checked={isSkipMode}
-                  onChange={() => setIsSkipMode(!isSkipMode)}
-                  className="toggle-checkbox"
-                />
-              </label>
-            </div>
+    <div className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
+      <Navbar username={username} />
+      <div className="mx-auto w-full max-w-5xl px-6 py-12">
+        {/* Header Section */}
+        <section className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">
+              Attendance Command Center
+            </h1>
+            <p className="mt-2 text-sm text-[#A1A1AA]">
+              Track every subject, predict safe skips, and spot risks early.
+            </p>
           </div>
 
-          <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Subjects</p>
-              <p className="mt-2 text-2xl font-extrabold">{subjects.length}</p>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Overall</p>
-              <p className="mt-2 text-2xl font-extrabold">{overallPercentage}%</p>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Safe</p>
-              <p className="mt-2 text-2xl font-extrabold text-emerald-300">{safeSubjects}</p>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">At Risk</p>
-              <p className="mt-2 text-2xl font-extrabold text-rose-300">{Math.max(subjects.length - safeSubjects, 0)}</p>
-            </div>
-            <div className="rounded-2xl border border-white/8 bg-[#0f1728] p-4">
-              <p className="text-xs uppercase tracking-wider text-slate-400">Current SGPI</p>
-              <p className="mt-2 text-2xl font-extrabold text-cyan-300">{currentSgpi.toFixed(2)}</p>
-            </div>
-            <div className='rounded-2xl border border-white/8 bg-[#0f1728] p-4'>
-              <p className="text-xs uppercase tracking-wider text-slate-400">Next Lecture</p>
-              <p className="mt-2 text-2xl font-extrabold">{getNextlec()?.subject || "None"}</p>
-            </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              onClick={() => router.push(`/${username}/timetable`)}
+              className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
+            >
+              Set Timetable
+            </button>
+            <label className="flex items-center gap-2.5 rounded-lg border border-[#27272A] bg-[#111113] px-3.5 py-2 text-xs font-medium text-[#A1A1AA]">
+              <span>Simulate Skipping Today</span>
+              <input
+                type="checkbox"
+                checked={isSkipMode}
+                onChange={() => setIsSkipMode(!isSkipMode)}
+                className="h-4 w-4 rounded border-[#27272A] bg-[#09090B] text-white focus:ring-0 focus:ring-offset-0 accent-white cursor-pointer"
+              />
+            </label>
           </div>
         </section>
 
-        <section className="mt-8">
+        {/* Stats Grid */}
+        <section className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">Subjects</p>
+            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{subjects.length}</p>
+          </div>
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">Overall</p>
+            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{overallPercentage}%</p>
+          </div>
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">Safe</p>
+            <p className="mt-2 text-2xl font-bold text-emerald-400">{safeSubjects}</p>
+          </div>
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">At Risk</p>
+            <p className="mt-2 text-2xl font-bold text-rose-400">{Math.max(subjects.length - safeSubjects, 0)}</p>
+          </div>
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">Current SGPI</p>
+            <p className="mt-2 text-2xl font-bold text-[#FAFAFA]">{currentSgpi.toFixed(2)}</p>
+          </div>
+          <div className="rounded-xl border border-[#27272A] bg-[#111113] p-4">
+            <p className="text-xs font-medium text-[#A1A1AA]">Next Lecture</p>
+            <p className="mt-2 truncate text-xl font-bold text-[#FAFAFA]" title={getNextlec()?.subject || "None"}>
+              {getNextlec()?.subject || "None"}
+            </p>
+          </div>
+        </section>
+
+        <div className="mt-10">
+          <hr className="border-[#27272A]" />
+        </div>
+
+        {/* Main Subject Cards Section */}
+        <section className="mt-10">
           {subjects.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-white/20 bg-white/2 p-10 text-center">
-              <h2 className="text-2xl font-bold">No subjects yet</h2>
-              <p className="mx-auto mt-2 max-w-md text-slate-300">
-                Start by adding your first subject. You will get instant attendance predictions as soon as you begin tracking.
+            <div className="rounded-xl border border-dashed border-[#27272A] bg-[#111113] p-12 text-center">
+              <h2 className="text-lg font-semibold text-[#FAFAFA]">No subjects added yet</h2>
+              <p className="mx-auto mt-2 max-w-sm text-sm text-[#A1A1AA]">
+                Start by adding your first subject to get instant attendance predictions.
               </p>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="mt-6 rounded-xl bg-cyan-400 px-6 py-3 font-bold text-slate-950 transition-transform hover:scale-[1.02] active:scale-95"
+                className="mt-6 rounded-lg bg-[#FAFAFA] px-5 py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200"
               >
                 Add your first subject
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {subjectCards.map((sub) => (
                 <AttendanceCard
                   key={sub._id}
@@ -463,26 +466,28 @@ export default function Dashboard({ params }) {
         </section>
       </div>
 
+      {/* Floating Action Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-5 right-4 z-50 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-400 text-3xl font-black text-slate-950 shadow-[0_20px_50px_-15px_rgba(34,211,238,0.7)] transition-transform hover:scale-110 active:scale-95 sm:bottom-8 sm:right-6 sm:h-16 sm:w-16 sm:text-4xl"
+        className="fixed bottom-8 right-8 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAFAFA] text-2xl font-bold text-black shadow-lg transition-transform hover:bg-zinc-200 hover:scale-105 active:scale-95"
         aria-label="Add subject"
       >
         +
       </button>
 
+      {/* Add Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-            <h2 className="text-2xl font-black">Add New Subject</h2>
-            <p className="mt-1 text-sm text-slate-300">Set your current attendance and target percentage.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-xl border border-[#27272A] bg-[#111113] p-6 shadow-xl">
+            <h2 className="text-lg font-bold text-[#FAFAFA]">Add New Subject</h2>
+            <p className="mt-1 text-xs text-[#A1A1AA]">Set your attendance values and target percentage.</p>
 
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-3">
               <input
                 type="text"
                 placeholder="Subject Name"
                 value={newSubject.name}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 onChange={(e) => setNewSubject({ ...newSubject, name: e.target.value })}
               />
 
@@ -492,7 +497,7 @@ export default function Dashboard({ params }) {
                   min="0"
                   placeholder="Attended"
                   value={newSubject.attended}
-                  className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                   onChange={(e) => setNewSubject({ ...newSubject, attended: Number(e.target.value) || 0 })}
                 />
                 <input
@@ -500,7 +505,7 @@ export default function Dashboard({ params }) {
                   min="0"
                   placeholder="Total"
                   value={newSubject.total}
-                  className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                   onChange={(e) => setNewSubject({ ...newSubject, total: Number(e.target.value) || 0 })}
                 />
               </div>
@@ -511,21 +516,21 @@ export default function Dashboard({ params }) {
                 max="100"
                 placeholder="Minimum %"
                 value={newSubject.minRequired}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 onChange={(e) => setNewSubject({ ...newSubject, minRequired: Number(e.target.value) || 0 })}
               />
             </div>
 
-            <div className="mt-7 flex gap-3">
+            <div className="mt-6 flex gap-3">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
+                className="flex-1 rounded-lg border border-[#27272A] bg-transparent py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:bg-zinc-900/50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleAddSubject}
-                className="flex-1 rounded-xl bg-cyan-400 py-3 font-black text-slate-950 transition hover:brightness-95"
+                className="flex-1 rounded-lg bg-[#FAFAFA] py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200"
               >
                 Create
               </button>
@@ -534,18 +539,19 @@ export default function Dashboard({ params }) {
         </div>
       )}
 
+      {/* Edit Modal */}
       {isEditModalOpen && editSubject && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-3xl border border-white/8 bg-[#121a2b] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.28)] md:p-8">
-            <h2 className="text-2xl font-black">Edit Subject</h2>
-            <p className="mt-1 text-sm text-slate-300">Update attendance values for this card.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-xl border border-[#27272A] bg-[#111113] p-6 shadow-xl">
+            <h2 className="text-lg font-bold text-[#FAFAFA]">Edit Subject</h2>
+            <p className="mt-1 text-xs text-[#A1A1AA]">Update current attendance values.</p>
 
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-3">
               <input
                 type="text"
                 placeholder="Subject Name"
                 value={editSubject.name}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 onChange={(e) => setEditSubject({ ...editSubject, name: e.target.value })}
               />
 
@@ -555,7 +561,7 @@ export default function Dashboard({ params }) {
                   min="0"
                   placeholder="Attended"
                   value={editSubject.attended}
-                  className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                   onChange={(e) => setEditSubject({ ...editSubject, attended: Number(e.target.value) || 0 })}
                 />
                 <input
@@ -563,7 +569,7 @@ export default function Dashboard({ params }) {
                   min="0"
                   placeholder="Total"
                   value={editSubject.total}
-                  className="rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                  className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                   onChange={(e) => setEditSubject({ ...editSubject, total: Number(e.target.value) || 0 })}
                 />
               </div>
@@ -574,24 +580,24 @@ export default function Dashboard({ params }) {
                 max="100"
                 placeholder="Minimum %"
                 value={editSubject.minRequired}
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 outline-none transition focus:border-cyan-300"
+                className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
                 onChange={(e) => setEditSubject({ ...editSubject, minRequired: Number(e.target.value) || 0 })}
               />
             </div>
 
-            <div className="mt-7 flex gap-3">
+            <div className="mt-6 flex gap-3">
               <button
                 onClick={() => {
                   setIsEditModalOpen(false);
                   setEditSubject(null);
                 }}
-                className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-white transition hover:bg-white/10"
+                className="flex-1 rounded-lg border border-[#27272A] bg-transparent py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:bg-zinc-900/50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveSubjectEdit}
-                className="flex-1 rounded-xl bg-cyan-400 py-3 font-black text-slate-950 transition hover:brightness-95"
+                className="flex-1 rounded-lg bg-[#FAFAFA] py-2 text-xs font-semibold text-black transition-colors hover:bg-zinc-200"
               >
                 Save
               </button>
@@ -601,5 +607,4 @@ export default function Dashboard({ params }) {
       )}
     </div>
   );
-};
-
+}
