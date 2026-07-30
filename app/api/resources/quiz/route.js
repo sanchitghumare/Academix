@@ -101,7 +101,7 @@ export async function POST(request) {
         {
           role: "system",
           content: [
-            "You are Stratos AI, a quiz generator for study resources.",
+            "You are Academix AI, a quiz generator for study resources.",
             "Generate exactly 5 multiple-choice questions from the provided resource context.",
             "Each question must have exactly 4 options, one correctIndex from 0 to 3, and a short explanation.",
             "Return valid JSON only in this shape: {\"title\": string, \"instructions\": string, \"questions\": [{\"id\": string, \"question\": string, \"options\": [string, string, string, string], \"correctIndex\": number, \"explanation\": string}] }.",

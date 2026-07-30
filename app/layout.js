@@ -4,8 +4,8 @@ import Navbar from "../components/navbar";
 import SessionWrapper from "../components/sessionwrapper";
 
 export const metadata = {
-  title: "Stratos",
-  description: "Stratos is a platform that helps you track your attendance and progress in your learning journey. We provide you with real-time analytics and insights to help you stay on track and achieve your goals.",
+  title: "Academix",
+  description: "Academix is a platform that helps you track your attendance and progress in your learning journey. We provide you with real-time analytics and insights to help you stay on track and achieve your goals.",
   manifest: "/manifest.json",
   icons: {
     icon: "/favicon.io.png",
@@ -15,7 +15,7 @@ export const metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Stratos",
+    title: "Academix",
   },
   formatDetection: {
     telephone: false,

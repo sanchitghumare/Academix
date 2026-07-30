@@ -64,7 +64,7 @@ const Dashboard = () => {
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Account Settings</h1>
                         <p className="mt-2 text-sm text-[#A1A1AA]">
-                            Update your profile details and preferences across Stratos.
+                            Update your profile details and preferences across Academix.
                         </p>
                     </div>
                 </section>

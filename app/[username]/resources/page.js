@@ -330,7 +330,7 @@ const page = ({ params }) => {
                                     )}
                                     {loading && (
                                         <div className="text-[10px] text-[#A1A1AA] animate-pulse">
-                                            Stratos AI running...
+                                             AI running...
                                         </div>
                                     )}
                                 </div>

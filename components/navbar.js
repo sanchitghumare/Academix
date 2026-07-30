@@ -16,7 +16,7 @@ const Navbar = () => {
       <div className="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-6">
         {/* Brand Logo */}
         <Link className="flex items-center gap-2 text-sm font-bold tracking-tight text-[#FAFAFA]" href="/">
-          <span>Stratos</span>
+          <span>Academix</span>
         </Link>
 
         {/* Desktop Navigation */}

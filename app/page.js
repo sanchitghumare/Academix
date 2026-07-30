@@ -30,7 +30,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#09090B] font-sans text-[#FAFAFA] selection:bg-zinc-800 selection:text-white">
       {/* 1. Navbar */}
       <nav className="mx-auto flex max-w-5xl items-center justify-between border-b border-[#27272A]/50 px-6 py-6">
-        <span className="text-lg font-bold tracking-tight">Stratos</span>
+        <span className="text-lg font-bold tracking-tight">Academix</span>
         <div className="flex items-center gap-4 text-sm font-medium">
           <Link
             href="/login"
@@ -119,7 +119,7 @@ export default function Home() {
           Ready to organize your semester?
         </h2>
         <p className="mt-3 text-sm text-[#A1A1AA]">
-          Start using Stratos today.
+          Start using Academix today.
         </p>
 
         <div className="mt-8">

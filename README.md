@@ -1,4 +1,4 @@
-# Stratos — Academic Command Center
+# Academix — Academic Command Center
 
 [![Vercel Deploy](https://vercelbadge.vercel.app/api/sanchitghumare/sanchit05)](https://sanchit05-ecru.vercel.app/)
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-brightgreen)
@@ -6,7 +6,7 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-%5E6.0-green)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-Stratos is a modern, full-stack academic command center designed to help students and administrators manage attendance, grades, lectures, and academic resources efficiently. Built with the MERN stack and Next.js, Stratos provides a seamless experience with analytics, secure authentication, and cloud-backed storage.
+Academix is a modern, full-stack academic command center designed to help students and administrators manage attendance, grades, lectures, and academic resources efficiently. Built with the MERN stack and Next.js, Academix provides a seamless experience with analytics, secure authentication, and cloud-backed storage.
 
 🔗 **[Live Demo](https://sanchit05-ecru.vercel.app/)**
 
@@ -51,8 +51,8 @@ Uncomment and add your screenshots for better presentation!
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/stratos.git
-cd stratos
+git clone https://github.com/YOUR_USERNAME/Academix.git
+cd Academix
 ```
 
 ### 2. Install Dependencies
@@ -113,5 +113,5 @@ Created by [Sanchit Ghumare](https://github.com/sanchitghumare)
 
 ---
 
-> Give Stratos a ⭐️ if you found this project helpful!
+> Give Academix a ⭐️ if you found this project helpful!
 

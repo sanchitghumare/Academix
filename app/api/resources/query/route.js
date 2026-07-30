@@ -53,7 +53,7 @@ export async function POST(request) {
       messages: [
         {
           role: "system",
-          content: `You are Stratos AI, an elite engineering study companion. Answer the student's question clearly using only this verified context document extraction layer:\n\n${retrievedContext}`
+          content: `You are Academix AI, an elite engineering study companion. Answer the student's question clearly using only this verified context document extraction layer:\n\n${retrievedContext}`
         },
         { role: "user", content: question }
       ],

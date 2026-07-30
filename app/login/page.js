@@ -10,7 +10,7 @@ const Login = () => {
   const router = useRouter();
 
   useEffect(() => {
-    document.title = "Login | Stratos";
+    document.title = "Login | Academix";
 
     if (session) {
       router.push(`/${session.user.name}`);
@@ -22,7 +22,7 @@ const Login = () => {
       {/* Navbar */}
       <nav className="mx-auto flex w-full max-w-5xl items-center justify-between border-b border-[#27272A]/50 px-6 py-6">
         <Link href="/" className="text-lg font-bold tracking-tight text-[#FAFAFA]">
-          Stratos
+          Academix
         </Link>
         <Link
           href="/"
@@ -36,7 +36,7 @@ const Login = () => {
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-6 py-12">
         <div className="rounded-xl border border-[#27272A] bg-[#111113] p-8 text-center shadow-sm">
           <h1 className="text-2xl font-bold tracking-tight text-[#FAFAFA]">
-            Welcome to Stratos
+            Welcome to Academix
           </h1>
           <p className="mt-2 text-sm text-[#A1A1AA]">
             Sign in to access your academic command center.
@@ -66,7 +66,7 @@ const Login = () => {
 
       {/* Simple Subtle Footer */}
       <footer className="mx-auto w-full max-w-5xl px-6 py-6 text-center text-xs text-[#A1A1AA]/60">
-        Stratos — Built for students, not spreadsheets.
+        Academix — Built for students, not spreadsheets.
       </footer>
     </div>
   );
