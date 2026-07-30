@@ -6,7 +6,7 @@ import SessionWrapper from "../components/sessionwrapper";
 export const metadata = {
   title: "Academix",
   description: "Academix is a platform that helps you track your attendance and progress in your learning journey. We provide you with real-time analytics and insights to help you stay on track and achieve your goals.",
-  manifest: "/manifest.json",
+  manifest: "/manifest.json?v=2",
   icons: {
     icon: "/favicon.io.png",
     shortcut: "/favicon.io.png",
