@@ -26,11 +26,6 @@ const Navbar = () => {
               <div className="relative">
                 <button
                   onClick={() => setShowdropdown(!showdropdown)}
-                  onBlur={() => {
-                    setTimeout(() => {
-                      setShowdropdown(false);
-                    }, 100);
-                  }}
                   id="dropdownDefaultButton"
                   className="inline-flex items-center rounded-lg border border-[#27272A] bg-[#111113] px-3 py-1.5 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 focus:outline-none"
                   type="button"
@@ -64,17 +59,19 @@ const Navbar = () => {
                     <li>
                       <Link
                         href="/dashboard"
+                        onClick={() => setShowdropdown(false)}
                         className="block rounded-md px-3 py-1.5 transition-colors hover:bg-zinc-900/60 hover:text-[#FAFAFA]"
                       >
-                        Dashboard
+                        Account Settings
                       </Link>
                     </li>
                     <li>
                       <Link
                         href={`/${userPath}`}
+                        onClick={() => setShowdropdown(false)}
                         className="block rounded-md px-3 py-1.5 transition-colors hover:bg-zinc-900/60 hover:text-[#FAFAFA]"
                       >
-                        Your Page
+                        Dashboard
                       </Link>
                     </li>
                   </ul>
@@ -120,14 +117,14 @@ const Navbar = () => {
                 onClick={() => setIsMenuOpen(false)}
                 className="block rounded-lg border border-[#27272A] bg-[#111113] px-3 py-2 text-xs font-medium text-[#FAFAFA]"
               >
-                Dashboard
+                Account Settings
               </Link>
               <Link
                 href={`/${userPath}`}
                 onClick={() => setIsMenuOpen(false)}
                 className="block rounded-lg border border-[#27272A] bg-[#111113] px-3 py-2 text-xs font-medium text-[#FAFAFA]"
               >
-                Your Page
+                Dashboard
               </Link>
               <button
                 onClick={() => {
