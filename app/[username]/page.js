@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react';
 import AttendanceCard from '@/components/Attendancecard';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/navbar';
-
 export default function Dashboard({ params }) {
   const { data: session, status } = useSession();
   const [subjects, setSubjects] = useState([]);
@@ -14,7 +13,7 @@ export default function Dashboard({ params }) {
   const [timetable, setTimetable] = useState({});
   const [isSkipMode, setIsSkipMode] = useState(false);
   const [currentSgpi, setCurrentSgpi] = useState(0);
-  const [newSubject, setNewSubject] = useState({ name: '', attended: 0, total: 0, minRequired: 75 });
+  const [newSubject, setNewSubject] = useState({ name: '', attended: '', total: '', minRequired: '' });
   const router = useRouter();
   const resolvedParams = use(params);
   const username = resolvedParams?.username || "guest";
@@ -498,7 +497,16 @@ export default function Dashboard({ params }) {
                   placeholder="Attended"
                   value={newSubject.attended}
                   className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
-                  onChange={(e) => setNewSubject({ ...newSubject, attended: Number(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    let val = e.target.value;
+                    if (val.length > 1 && val.startsWith('0')) {
+                      val = String(Number(val));
+                    }
+                    setNewSubject({
+                      ...newSubject,
+                      attended: val === '' ? '' : Number(val)
+                    })
+                  }}
                 />
                 <input
                   type="number"
@@ -506,7 +514,16 @@ export default function Dashboard({ params }) {
                   placeholder="Total"
                   value={newSubject.total}
                   className="rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
-                  onChange={(e) => setNewSubject({ ...newSubject, total: Number(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    let val = e.target.value;
+                    if (val.length > 1 && val.startsWith('0')) {
+                      val = String(Number(val));
+                    }
+                    setNewSubject({
+                      ...newSubject,
+                      total: val === '' ? '' : Number(val)
+                    })
+                  }}
                 />
               </div>
 
@@ -517,7 +534,13 @@ export default function Dashboard({ params }) {
                 placeholder="Minimum %"
                 value={newSubject.minRequired}
                 className="w-full rounded-lg border border-[#27272A] bg-[#09090B] px-3.5 py-2 text-sm text-[#FAFAFA] placeholder-[#A1A1AA]/50 outline-none transition-colors focus:border-zinc-500"
-                onChange={(e) => setNewSubject({ ...newSubject, minRequired: Number(e.target.value) || 0 })}
+                onChange={(e) => {
+                  let val = e.target.value;
+                  if (val.length > 1 && val.startsWith('0')) {
+                    val = String(Number(val));
+                  }
+                  setNewSubject({ ...newSubject, minRequired: val === '' ? '' : Number(val) })
+                }}
               />
             </div>
 

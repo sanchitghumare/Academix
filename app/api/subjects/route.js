@@ -3,7 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import connectDb from "@/db/connectDb";
 import Subject from "@/models/subjects";
-
+import User from "@/models/user";
+import { sendNotification } from "@/lib/sendNotification";
 export const POST = async (request) => {
     try {
         const session = await getServerSession(authOptions);
@@ -26,12 +27,16 @@ export const POST = async (request) => {
         }
 
         await connectDb();
+        const user = await User.findOne({ email: session.user.email });
+        if (!user) {
+            return NextResponse.json({ success: false, error: "User not found" }, { status: 404 });
+        }
         const newSubject = await Subject.create({
+            user: user._id,
             subjectname,
             attended,
             total,
             minRequired,
-            userEmail: session.user.email,
         });
 
         return NextResponse.json({ success: true, subject: newSubject });
@@ -49,7 +54,10 @@ export const GET = async (request) => {
         }
 
         await connectDb();
-        const subjects = await Subject.find({ userEmail: session.user.email }).sort({ createdAt: -1 });
+        const user = await User.findOne({
+            email: session.user.email,
+        });
+        const subjects = await Subject.find({ user: user._id }).sort({ createdAt: -1 });
         return NextResponse.json({ success: true, subjects });
     } catch (error) {
         console.error("Error fetching subjects:", error);
@@ -70,7 +78,8 @@ export const PATCH = async (request) => {
         }
 
         await connectDb();
-        const subject = await Subject.findOne({ _id: id, userEmail: session.user.email });
+        const user = await User.findOne({ email: session.user.email });
+        const subject = await Subject.findOne({ _id: id, user: user._id });
         if (!subject) {
             return NextResponse.json({ success: false, error: "Subject not found" }, { status: 404 });
         }
@@ -79,9 +88,63 @@ export const PATCH = async (request) => {
         if (type === "present") {
             subject.attended += 1;
         }
-       
+        if (subject.attended === 0 || subject.total < 5) {
+            await subject.save();
+            return NextResponse.json({
+                success: true,
+                subject,
+            });
+        }
+        const nextAbsence =
+            (subject.attended / (subject.total + 1)) * 100;
+        console.log({
+            attended: subject.attended,
+            total: subject.total,
+            minRequired: subject.minRequired,
+            nextAbsence,
+            warned: subject.notification.warned,
+        });
+        if (user.notifications.enabled &&
+            user.notifications.attendanceAlerts) {
+            if (
+                nextAbsence < subject.minRequired &&
+                !subject.notification.warned
+            ) {
+                console.log("Entered notification block");
+                try {
+                    const user = await User.findOne({
+                        email: session.user.email,
+                    });
+
+                    if (user) {
+                        const sent = await sendNotification(
+                            user._id,
+                            "⚠️ Attendance Alert",
+                            `Missing your next ${subject.subjectname} lecture will drop your attendance below your ${subject.minRequired}% target.`
+                        );
+                        console.log("Notification sent:", sent);
+
+                        subject.notification.warned = true;
+                    }
+                } catch (err) {
+                    console.error(
+                        `Failed to send attendance notification for ${subject.subjectname}:`,
+                        err
+                    );
+                }
+            } else if (
+                nextAbsence >= subject.minRequired &&
+                subject.notification.warned
+            ) {
+                subject.notification.warned = false;
+            }
+        }
         await subject.save();
-        return NextResponse.json({ success: true, subject });
+
+        return NextResponse.json({
+            success: true,
+            subject,
+        });
     } catch (error) {
         console.error("Error updating subject attendance:", error);
         return NextResponse.json({ success: false, error: "Failed to update subject" }, { status: 500 });
@@ -115,8 +178,9 @@ export const PUT = async (request) => {
         }
 
         await connectDb();
+        const user = await User.findOne({ email: session.user.email });
         const updated = await Subject.findOneAndUpdate(
-            { _id: id, userEmail: session.user.email },
+            { _id: id, user: user._id },
             {
                 $set: {
                     subjectname: normalizedName,
@@ -157,9 +221,10 @@ export const DELETE = async (request) => {
         await connectDb();
 
         // Security: Only delete if the ID matches AND it belongs to this user
-        const deletedSubject = await Subject.findOneAndDelete({ 
-            _id: id, 
-            userEmail: session.user.email 
+        const user = await User.findOne({ email: session.user.email });
+        const deletedSubject = await Subject.findOneAndDelete({
+            _id: id,
+            user: user._id
         });
 
         if (!deletedSubject) {

@@ -216,7 +216,15 @@ const page = ({ params }) => {
                 {/* Header Metrics Section */}
                 <section className="mb-8">
                     <div>
+                        <div className="flex flex-row justify-between">
                         <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Resources</h1>
+                        <button
+                                    onClick={() => router.push(`/${username}`)}
+                                    className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
+                                >
+                                    Back to Dashboard
+                                </button>
+                        </div>
                         <p className="mt-2 text-sm text-[#A1A1AA]">
                             Upload notes, PYQs, and reference files for quick access across your semester.
                         </p>

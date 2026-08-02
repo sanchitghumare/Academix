@@ -65,15 +65,6 @@ const Navbar = () => {
                         Account Settings
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        href={`/${userPath}`}
-                        onClick={() => setShowdropdown(false)}
-                        className="block rounded-md px-3 py-1.5 transition-colors hover:bg-zinc-900/60 hover:text-[#FAFAFA]"
-                      >
-                        Dashboard
-                      </Link>
-                    </li>
                   </ul>
                 </div>
               </div>

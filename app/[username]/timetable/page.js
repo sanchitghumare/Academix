@@ -208,7 +208,15 @@ export default function TimetablePage({ params }) {
                 <section className="mb-8">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Weekly Planner</h1>
+                            <div className="flex flex-row justify-around items-baseline gap-4">
+                                <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Weekly Planner</h1>
+                                <button
+                                    onClick={() => router.push(`/${username}`)}
+                                    className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
+                                >
+                                    Back to Dashboard
+                                </button>
+                            </div>
                             <p className="mt-2 text-sm text-[#A1A1AA]">
                                 Set subjects and hours for each day-slot (1-hour lecture, 2-hour lab, etc.).
                             </p>
