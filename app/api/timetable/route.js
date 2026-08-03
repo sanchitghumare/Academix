@@ -35,7 +35,7 @@ export const POST = async (request) => {
                     },
                 },
             },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
+            { upsert: true, returnDocument: "after", setDefaultsOnInsert: true }
         );
 
         return NextResponse.json({ success: true, timetable: updated });

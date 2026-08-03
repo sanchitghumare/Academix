@@ -73,7 +73,7 @@ export const POST = async (request) => {
                     percentage,
                 },
             },
-            { upsert: true, new: true, setDefaultsOnInsert: true, strict: false }
+            { upsert: true, returnDocument: "after", setDefaultsOnInsert: true, strict: false }
         );
 
         return NextResponse.json({ success: true, grade: newGrade });

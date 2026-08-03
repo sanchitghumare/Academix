@@ -3,6 +3,7 @@
 
 import React, { use, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const categories = ["Notes", "PYQs", "Reference", "Others"];
@@ -27,6 +28,7 @@ const page = ({ params }) => {
     const resolvedusername = use(params);
     const { username } = resolvedusername || {};
     const { data: session } = useSession();
+    const router = useRouter();
 
     const [resources, setResources] = useState([]);
     const [filter, setFilter] = useState("All");
@@ -218,16 +220,19 @@ const page = ({ params }) => {
                     <div>
                         <div className="flex flex-row justify-between">
                         <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Resources</h1>
+                        
+                        </div>
+                         <div className="flex flex-row justify-around items-center gap-4">
+                        <p className="mt-2 text-sm text-[#A1A1AA]">
+                            Upload notes, PYQs, and reference files for quick access across your semester.
+                        </p>
                         <button
                                     onClick={() => router.push(`/${username}`)}
                                     className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
                                 >
                                     Back to Dashboard
                                 </button>
-                        </div>
-                        <p className="mt-2 text-sm text-[#A1A1AA]">
-                            Upload notes, PYQs, and reference files for quick access across your semester.
-                        </p>
+                                </div>
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">

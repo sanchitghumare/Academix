@@ -97,13 +97,6 @@ export const PATCH = async (request) => {
         }
         const nextAbsence =
             (subject.attended / (subject.total + 1)) * 100;
-        console.log({
-            attended: subject.attended,
-            total: subject.total,
-            minRequired: subject.minRequired,
-            nextAbsence,
-            warned: subject.notification.warned,
-        });
         if (user.notifications.enabled &&
             user.notifications.attendanceAlerts) {
             if (
@@ -189,7 +182,7 @@ export const PUT = async (request) => {
                     minRequired: normalizedMin,
                 },
             },
-            { new: true }
+            { returnDocument:"after" }
         );
 
         if (!updated) {

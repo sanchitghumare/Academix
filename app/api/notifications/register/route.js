@@ -70,7 +70,7 @@ export async function DELETE() {
             );
         }
 
-        await connectDb();
+        await connectDB();
 
         const user = await User.findOne({
             email: session.user.email,

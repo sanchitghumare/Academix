@@ -2,15 +2,16 @@
 
 import React, { use, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const DEFAULT_SLOTS = [
-    "09:00 - 10:00",
-    "10:00 - 11:00",
-    "11:15 - 12:15",
-    "12:15 - 01:15",
-    "02:00 - 03:00",
-    "03:00 - 04:00",
+        "09:00 - 10:00",
+        "10:00 - 11:00",
+        "11:15 - 12:15",
+        "12:15 - 13:15",
+        "14:00 - 15:00",
+        "15:00 - 16:00",
 ];
 
 const normalizeCell = (value) => {
@@ -43,6 +44,7 @@ export default function TimetablePage({ params }) {
     const resolvedParams = use(params);
     const username = resolvedParams?.username || "guest";
     const storageKey = useMemo(() => `stratos_timetable_${username}`, [username]);
+    const router = useRouter();
 
     const [slots, setSlots] = useState(DEFAULT_SLOTS);
     const [timetable, setTimetable] = useState(buildEmptyGrid(DEFAULT_SLOTS));
@@ -152,7 +154,7 @@ export default function TimetablePage({ params }) {
                     ...prev[day],
                     [slot]: {
                         ...currentCell,
-                        [key]: key === "hours" ?value === ""?"": Math.max(1, Number(value)) : value,
+                        [key]: key === "hours" ? value === "" ? "" : Math.max(1, Number(value)) : value,
                     },
                 },
             };
@@ -197,7 +199,7 @@ export default function TimetablePage({ params }) {
     const saveLabel = {
         idle: "",
         saving: "Saving...",
-        saved: "Saved to cloud",
+        saved: "Saved ",
         error: "Save failed",
     };
 
@@ -208,18 +210,19 @@ export default function TimetablePage({ params }) {
                 <section className="mb-8">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                            <div className="flex flex-row justify-around items-baseline gap-4">
+                            
                                 <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">Weekly Planner</h1>
-                                <button
+                                <div className="flex flex-row justify-around items-center gap-4">
+                            <p className="mt-2 text-sm text-[#A1A1AA]">
+                                Set subjects and hours for each day-slot (1-hour lecture, 2-hour lab, etc.).
+                            </p>
+                            <button
                                     onClick={() => router.push(`/${username}`)}
                                     className="rounded-lg border border-[#27272A] bg-transparent px-4 py-2 text-xs font-semibold text-[#FAFAFA] transition-colors hover:border-zinc-700 hover:bg-zinc-900/50"
                                 >
                                     Back to Dashboard
                                 </button>
-                            </div>
-                            <p className="mt-2 text-sm text-[#A1A1AA]">
-                                Set subjects and hours for each day-slot (1-hour lecture, 2-hour lab, etc.).
-                            </p>
+                                </div>
                         </div>
 
                         {status === "authenticated" && saveState && (

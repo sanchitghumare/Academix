@@ -1,8 +1,6 @@
 
 import "./globals.css";
-import Navbar from "../components/navbar";
 import SessionWrapper from "../components/sessionwrapper";
-
 export const metadata = {
   title: "Academix",
   description: "Academix is a platform that helps you track your attendance and progress in your learning journey. We provide you with real-time analytics and insights to help you stay on track and achieve your goals.",
