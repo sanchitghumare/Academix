@@ -152,7 +152,7 @@ export default function TimetablePage({ params }) {
                     ...prev[day],
                     [slot]: {
                         ...currentCell,
-                        [key]: key === "hours" ? Math.max(1, Number(value) || 1) : value,
+                        [key]: key === "hours" ?value === ""?"": Math.max(1, Number(value)) : value,
                     },
                 },
             };
@@ -316,10 +316,26 @@ export default function TimetablePage({ params }) {
                                                                 <label className="text-[11px] font-medium text-[#A1A1AA]">Hours</label>
                                                                 <input
                                                                     type="number"
-                                                                    min="1"
                                                                     max="4"
                                                                     value={cell.hours}
-                                                                    onChange={(e) => updateCell(day, slot, "hours", e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        const value = e.target.value;
+
+                                                                        updateCell(
+                                                                            day,
+                                                                            slot,
+                                                                            "hours",
+                                                                            value === "" ? "" : Number(value)
+                                                                        );
+                                                                    }}
+                                                                    onBlur={(e) => {
+                                                                        let value = Number(e.target.value);
+
+                                                                        if (isNaN(value) || value < 1) value = 1;
+                                                                        if (value > 4) value = 4;
+
+                                                                        updateCell(day, slot, "hours", value);
+                                                                    }}
                                                                     className="w-16 rounded-md border border-[#27272A] bg-[#111113] px-2 py-1 text-xs text-[#FAFAFA] outline-none transition-colors focus:border-zinc-500"
                                                                 />
                                                             </div>
