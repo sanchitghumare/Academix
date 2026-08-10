@@ -2,7 +2,7 @@ name: Daily Summary Cron
 
 on:
   schedule:
-    - cron: "0 * * * *" # Every hour
+    - cron: "30 2 * * *" # Runs every day at 8:00am IST
   workflow_dispatch:
 
 jobs:

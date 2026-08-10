@@ -371,7 +371,7 @@ export default function Dashboard({ params }) {
         <section className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-[#FAFAFA]">
-              Attendance Command Center
+              Attendance 
             </h1>
             <p className="mt-2 text-sm text-[#A1A1AA]">
               Track every subject, predict safe skips, and spot risks early.

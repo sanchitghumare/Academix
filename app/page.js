@@ -52,7 +52,7 @@ export default async function Home() {
       {/* 2. Hero Section */}
       <section className="mx-auto max-w-3xl px-6 pb-16 pt-24 text-center">
         <h1 className="text-5xl font-bold leading-tight tracking-tight text-[#FAFAFA] sm:text-6xl">
-          Academic Command Center <br />
+          Academix <br />
           <span className="text-[#A1A1AA]">for College Students.</span>
         </h1>
 

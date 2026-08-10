@@ -69,10 +69,10 @@ export async function GET(request) {
             const time = user.notifications.dailySummaryTime || "08:00";
             const [hour, minute] = time.split(":").map(Number);
 
-            // allow a 1 minute window
+            // allow a 1 hr window
             if (
                 currentHour !== hour ||
-                Math.abs(currentMinute - minute) > 1
+                Math.abs(currentMinute - minute) > 60
             ) {
                 console.log(
                     `[daily-summary] Skipping user ${user._id}: configured time ${time} not within window of current IST time ${currentHour}:${String(currentMinute).padStart(2, "0")}`
